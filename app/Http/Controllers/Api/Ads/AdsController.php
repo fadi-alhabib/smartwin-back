@@ -12,11 +12,13 @@ use Spatie\RouteAttributes\Attributes\Prefix;
 class AdsController extends Controller
 {
     public function __construct(private readonly AdsServiceInterface $adsService) {}
-
-    #[Get('/')]
-    public function index()
+    #[Get('/home')]
+    public function index(Request $request)
     {
+        // TODO::UPDATE AVAILABLE TIME DAILY
         $ads = $this->adsService->all();
-        return $this->success(data: $ads);
+        $user = $request->user();
+
+        return $this->success(data: ['ads' => $ads, 'points' => $user->points, 'available_time' => $user->room->available_time]);
     }
 }
