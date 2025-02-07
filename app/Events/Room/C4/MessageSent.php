@@ -22,7 +22,7 @@ class MessageSent implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return ['room-' . $this->message->room_id];
+        return ['room.' . $this->message->room_id];
     }
 
     public function broadcastWith()
@@ -36,6 +36,6 @@ class MessageSent implements ShouldBroadcast
     }
     public function broadcastAs()
     {
-        return 'message-sent';
+        return 'message.sent';
     }
 }

@@ -33,7 +33,9 @@ return [
         'sync' => [
             'driver' => 'sync',
         ],
-
+        'broadcast' => [
+            'driver' => 'sync', // Change this to 'sync'
+        ],
         'database' => [
             'driver' => 'database',
             'connection' => env('DB_QUEUE_CONNECTION'),

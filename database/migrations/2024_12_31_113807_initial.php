@@ -178,11 +178,12 @@ return new class extends Migration {
             $table->unsignedBigInteger('room_id');
             $table->unsignedBigInteger('challenger_id');
             $table->json('board')->nullable(); // 6 rows x 7 columns
-            //json_encode(array_fill(0, 6, array_fill(0, 7, null)))
+            $table->integer('time_consumed')->default(0);
             $table->unsignedBigInteger('current_turn'); // host_id or challenger_id
             $table->timestamps();
 
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
+            $table->foreign('current_turn')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('quiz_games', function (Blueprint $table) {

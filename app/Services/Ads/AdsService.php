@@ -12,4 +12,9 @@ class AdsService extends CRUDService implements AdsServiceInterface
     {
         $this->repository = $adsRepository;
     }
+
+    public function getRandomActive(?int $limit = 5)
+    {
+        return $this->repository->getRandomActive($limit);
+    }
 }

@@ -18,9 +18,13 @@ use App\Services\Common\Contracts\ImageServiceInterface;
 use App\Services\Store\Contracts\ProductServiceInterface;
 use App\Repositories\Store\EloquentProductImageRepository;
 use App\Repositories\Common\Contracts\BaseRepositoryInterface;
+use App\Repositories\Rooms\Contracts\RoomRepositoryInterface;
+use App\Repositories\Rooms\EloquentRoomRepository;
 use App\Repositories\Store\Contracts\StoreRepositoryInterface;
 use App\Repositories\Store\Contracts\ProductRepositoryInterface;
 use App\Repositories\Store\Contracts\ProductImageRepositoryInterface;
+use App\Services\Rooms\Contracts\RoomServiceInterface;
+use App\Services\Rooms\RoomService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,6 +47,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(AdsRepositoryInterface::class, EloquentAdsRepository::class);
         $this->app->bind(AdsServiceInterface::class, AdsService::class);
+
+        $this->app->bind(RoomRepositoryInterface::class, EloquentRoomRepository::class);
+        $this->app->bind(RoomServiceInterface::class, RoomService::class);
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Events\Room\Quiz\QuizGameAnswerMade;
 use App\Events\Room\Quiz\QuizGameOver;
 use App\Events\Room\Quiz\QuizGameStarted;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Room\Quiz\ImageQuestionResource;
 use App\Http\Resources\Room\Quiz\QuestionResource;
 use App\Models\Answer;
 use App\Models\Question;
@@ -14,45 +15,55 @@ use App\Models\QuizGames;
 use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Pusher\Pusher;
 use Spatie\RouteAttributes\Attributes\Get;
+use Spatie\RouteAttributes\Attributes\Post;
+use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Prefix;
 
 #[Prefix('api/room/{room}/quiz')]
 class QuizGameController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
+    public function __construct(private readonly Pusher $pusher) {}
 
-    #[Get('/start')]
+    #[Get(uri: '/start', middleware: ['auth:sanctum'])]
     public function start(Room $room, Request $request)
     {
         if ($room->available_time === 0) {
             return $this->failed('No time left', 403);
         }
-        $isImagesGame = $request->input('is_images_game');
+
+        $isImagesGame = $request->input('is_images_game') === 'true';
 
         $game = new QuizGames();
         $game->images_game = $isImagesGame;
         $game->room_id = $room->id;
+        $game->questions_count = 10;
+        $game->save();
 
-        $question = Question::where('status', true)->with('answers')
-            ->inRandomOrder()->first();
+        $questions = $this->fetchQuestions($isImagesGame, 10);
 
-        broadcast(new QuizGameStarted($game, $question));
+        $this->pusher->trigger('room.' . $room->id, 'quiz.started', [
+            'game_id' => $game->id,
+            'room_id' => $room->id,
+            'questions' => $questions,
+        ]);
 
-        return $this->success(data: new QuestionResource($question), message: "لقد بدأت لعبة الاسئلة");
+        return $this->success(data: [
+            "game_id" => $game->id,
+            "questions" => $questions,
+        ], message: "لقد بدأت لعبة الاسئلة");
     }
 
-    #[Get('/{quiz}/answer/{answer}')]
-    public function answer(
-        Room $room,
-        QuizGames $quiz,
-        Answer $answer,
-        Request $request,
-    ) {
-        $rightAnswer = false;
+    #[Post(uri: '/{quiz}/end', middleware: ['auth:sanctum'])]
+    public function end(Room $room, QuizGames $quiz, Request $request)
+    {
+        $user = $request->user();
+        if ($room->host_id != $user->id) {
+            return $this->failed('not your game', 403);
+        }
+
         if ($quiz->game_over) {
             return $this->failed(
                 message: 'This game is not valid anymore',
@@ -60,60 +71,99 @@ class QuizGameController extends Controller
             );
         }
 
-
-
-        if ($quiz->questions_count === 10) {
-            $user = $request->user();
-            $quiz->game_over = true;
-            if ($user->points < 500) {
-                $score = $quiz->right_answers_count > 8 ? 10 : 5;
-                $user->points += $score;
-            } else {
-                $score = $quiz->right_answers_count > 8 ? 10 : -10;
-                $user->points +=  $score;
-            }
-
-            $quiz->end_time =  now();
-            $created_at = Carbon::parse($quiz->created_at);
-            $minutes_taken = (int) $created_at->diffInMinutes($quiz->end_time);
-            $room->available_time -= $minutes_taken;
-            if ($room->available_time <= 0) {
-                $room->available_time = 0;
-                broadcast(new NoTimeRemaining());
-            }
-
-            broadcast(new QuizGameOver(score: $score, game: $quiz));
-            $quiz->save();
-            $room->save();
-            $user->save();
-            return $this->success();
-        }
-        if ($answer & $answer->is_correct) {
-            $rightAnswer = true;
-            $quiz->right_answers_count += 1;
-        }
-        if (!$quiz->images_game) {
-            $question = Question::where('status', true)
-                ->with('answers')
-                ->inRandomOrder()
-                ->first();
-        } else {
-            $question = Question::where('status', true)
-                ->whereNotNull('image')
-                ->with('answers')
-                ->inRandomOrder()->first();
+        $rightQuestionsCount = $request->input('rightQuestionsCount');
+        if (!is_numeric($rightQuestionsCount) || $rightQuestionsCount < 0 || $rightQuestionsCount > 10) {
+            return $this->failed('Invalid rightQuestionsCount', 400);
         }
 
-        $quiz->questions_count += 1;
+        $quiz->game_over = true;
+        $quiz->end_time = now();
+        $quiz->right_answers_count = $rightQuestionsCount;
+
+        $created_at = Carbon::parse($quiz->created_at);
+        $minutes_taken = (int) $created_at->diffInMinutes($quiz->end_time);
+
+        $score = $this->calculateScore($quiz->right_answers_count, $user->points);
+        $user->points += $score;
+
+        $room->available_time -= $minutes_taken;
+        if ($room->available_time <= 0) {
+            $room->available_time = 0;
+            $this->pusher->trigger('room.' . $room->id, 'no.time', []);
+        }
+
+        $this->pusher->trigger('room.' . $room->id, 'quiz.over', [
+            'score' => $score,
+            'minutes_taken' => $minutes_taken,
+        ]);
+
         $quiz->save();
         $room->save();
+        $user->save();
 
-        broadcast(new QuizGameAnswerMade(
-            room_id: $room->id,
-            rightAnswer: $rightAnswer,
-            question: $question,
-        ));
+        return $this->success(data: [
+            'score' => $score,
+            'minutes_taken' => $minutes_taken,
+        ], message: "Game over");
+    }
 
-        return $this->success('question answered');
+    #[Post(uri: 'broadcast-answer', middleware: ['auth:sanctum'])]
+    public function broadcastAnswer(
+        Room $room,
+        Request $request
+    ) {
+        $user = $request->user();
+        if ($room->host_id != $user->id) {
+            return $this->failed('not your game', 403);
+        }
+
+        $answerId = $request->input('answerId');
+        if (!$answerId) {
+            return $this->failed('answerId is required', 400);
+        }
+
+        $answer = Answer::find($answerId);
+        if (!$answer) {
+            return $this->failed('Answer not found', 404);
+        }
+
+        $this->pusher->trigger('room.' . $room->id, 'answer.made', [
+            'answerId' => $answerId,
+            'isCorrect' => $answer->is_correct,
+        ]);
+
+        return $this->success(message: "Answer broadcasted");
+    }
+
+    private function fetchQuestions($isImagesGame, $count)
+    {
+        if ($isImagesGame) {
+            return ImageQuestionResource::collection(
+                Question::where('status', true)
+                    ->whereNotNull('image')
+                    ->with('answers')
+                    ->inRandomOrder()
+                    ->limit($count)
+                    ->get()
+            );
+        } else {
+            return QuestionResource::collection(
+                Question::where('status', true)
+                    ->whereNull('image')
+                    ->with('answers')
+                    ->inRandomOrder()
+                    ->limit($count)
+                    ->get()
+            );
+        }
+    }
+
+    private function calculateScore($rightAnswersCount, $userPoints)
+    {
+        if ($userPoints < 500) {
+            return $rightAnswersCount > 8 ? 10 : ($rightAnswersCount > 6 ? 5 : 0);
+        } else {
+            return $rightAnswersCount > 8 ? 10 : -10;
+        }
     }
 }

@@ -1,130 +1,176 @@
 <?php
 
-namespace App\Http\Controllers\Api\Room\C4;
+namespace App\Http\Controllers;
 
-use App\Events\Room\C4\GameDraw;
-use App\Events\Room\C4\C4GameStarted;
-use App\Events\Room\C4\GameWon;
-use App\Events\Room\C4\MoveMade;
-use App\Http\Controllers\Controller;
 use App\Models\C4Game;
 use App\Models\Room;
+use App\Events\GameUpdated; // We'll create this event later
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Pusher\Pusher;
 
-
-class C4GameController extends Controller
+class GameController extends Controller
 {
-    public function start(Room $room, Request $request)
+    public function __construct(private readonly Pusher $pusher) {}
+    public function startGame(Request $request, Room $room)
     {
-        $challengerId = $request->challenger_id;
+
+        if ($room->host_id !== Auth::id()) {
+            return $this->failed('Only the room host can start the game.', 403);
+        }
 
         $game = C4Game::create([
             'room_id' => $room->id,
-            'host_id' => $room->host_id,
-            'challenger_id' => $challengerId,
-            'current_turn' => $room->host_id,
-            'board' => json_encode(array_fill(0, 6, array_fill(0, 7, null)))
+            'board' => $this->initializeBoard(),
+            'challenger_id' => $request->challenged_id,
+            'current_turn' => $room->host_id, // Host starts first
         ]);
 
-        broadcast(new C4GameStarted($game));
-
-        return $this->success(data: $game);
+        $this->pusher->trigger('room.' . $room->id, 'c4.started', [
+            'game_id' => $game->id,
+            'challenger_id' => $game->challenger_id,
+            'current_turn' => $room->current_turn,
+        ]);
+        return $this->success(['message' => 'Game started.', 'game_id' => $game->id, 'current_turn' => $game->current_turn]);
     }
 
-    public function makeMove(C4Game $game, Request $request)
+    public function makeMove(Request $request, C4Game $game)
     {
+        $request->validate([
+            'column' => 'required|integer|min:0|max:6',
+        ]);
+        if ($game->current_turn !== Auth::id()) {
+            return $this->failed('Not your turn.', 400);
+        }
+        $board = $game->board;
         $column = $request->column;
-        $playerId = $request->user()->id;
 
-        if ($playerId !== $game->current_turn) {
-            return response()->json(['error' => 'Not your turn'], 403);
+        $row = $this->getNextAvailableRow($board, $column);
+        if ($row === -1) {
+            return $this->failed('Invalid move. Column is full.', 400);
         }
 
-        $success = $game->makeMove($column, $playerId);
+        $player = ($game->current_turn == $game->room->host_id) ? 1 : 2; // 1 for host, 2 for challenger
+        $board[$row][$column] = $player;
+        $game->board = $board;
 
-        if (!$success) {
-            return response()->json(['error' => 'Invalid move'], 400);
+        if ($this->checkWin($board, $player)) {
+            $message = 'Player ' . $player . ' wins!';
+            $game->current_turn = null; // Game over
+        } elseif ($this->checkDraw($board)) {
+            $message = 'Game draw!';
+            $game->current_turn = null; // Game over
+        } else {
+            $game->current_turn = ($game->current_turn == $game->room->host_id) ? $game->challenger_id : $game->room->host_id;
+            $message = 'Move made. Next turn.';
         }
 
-        broadcast(new MoveMade($game));
+        $game->save();
+        $this->broadcastGameUpdate($game, 'move.made', $message);
 
-        if ($this->checkWin($game)) {
-            broadcast(new GameWon($game, $playerId));
-            return response()->json(['message' => 'Game won']);
-        }
+        return response()->json(['message' => $message, 'game_state' => $game, 'current_turn' => $game->current_turn]);
+    }
 
-        if ($this->checkDraw($game)) {
-            broadcast(new GameDraw($game));
-            return response()->json(['message' => 'Game draw']);
-        }
-
+    public function getGame(C4Game $game)
+    {
         return response()->json($game);
     }
 
-
-
-    public function state(C4Game $game)
+    private function initializeBoard()
     {
-        return $this->success(data: $game);
+        return array_fill(0, 6, array_fill(0, 7, 0)); // 6 rows, 7 columns, 0 for empty
     }
 
-    private function checkWin(C4Game $game)
+    private function getNextAvailableRow($board, $column)
     {
-        $board = json_decode($game->board, true);
+        for ($row = 5; $row >= 0; $row--) {
+            if ($board[$row][$column] == 0) {
+                return $row;
+            }
+        }
+        return -1; // Column is full
+    }
 
+    private function checkWin($board, $player)
+    {
+        // Check horizontal
         for ($row = 0; $row < 6; $row++) {
-            for ($col = 0; $col < 7; $col++) {
-                if ($this->isWinningPosition($board, $row, $col)) {
+            for ($col = 0; $col < 4; $col++) {
+                if (
+                    $board[$row][$col] == $player &&
+                    $board[$row][$col + 1] == $player &&
+                    $board[$row][$col + 2] == $player &&
+                    $board[$row][$col + 3] == $player
+                ) {
                     return true;
                 }
             }
         }
-
+        // Check vertical
+        for ($row = 0; $row < 3; $row++) {
+            for ($col = 0; $col < 7; $col++) {
+                if (
+                    $board[$row][$col] == $player &&
+                    $board[$row + 1][$col] == $player &&
+                    $board[$row + 2][$col] == $player &&
+                    $board[$row + 3][$col] == $player
+                ) {
+                    return true;
+                }
+            }
+        }
+        // Check diagonals (top-left to bottom-right)
+        for ($row = 0; $row < 3; $row++) {
+            for ($col = 0; $col < 4; $col++) {
+                if (
+                    $board[$row][$col] == $player &&
+                    $board[$row + 1][$col + 1] == $player &&
+                    $board[$row + 2][$col + 2] == $player &&
+                    $board[$row + 3][$col + 3] == $player
+                ) {
+                    return true;
+                }
+            }
+        }
+        // Check diagonals (bottom-left to top-right)
+        for ($row = 3; $row < 6; $row++) {
+            for ($col = 0; $col < 4; $col++) {
+                if (
+                    $board[$row][$col] == $player &&
+                    $board[$row - 1][$col + 1] == $player &&
+                    $board[$row - 2][$col + 2] == $player &&
+                    $board[$row - 3][$col + 3] == $player
+                ) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
-    private function isWinningPosition($board, $row, $col)
+    private function checkDraw($board)
     {
-        if ($board[$row][$col] === null) {
-            return false;
-        }
-
-        $player = $board[$row][$col];
-
-        return $this->checkDirection($board, $row, $col, 0, 1, $player) || // Horizontal
-            $this->checkDirection($board, $row, $col, 1, 0, $player) || // Vertical
-            $this->checkDirection($board, $row, $col, 1, 1, $player) || // Diagonal (down-right)
-            $this->checkDirection($board, $row, $col, 1, -1, $player);  // Diagonal (down-left)
-    }
-
-    private function checkDirection($board, $row, $col, $dRow, $dCol, $player)
-    {
-        $count = 0;
-
-        for ($i = 0; $i < 4; $i++) {
-            $r = $row + $i * $dRow;
-            $c = $col + $i * $dCol;
-
-            if ($r < 0 || $r >= 6 || $c < 0 || $c >= 7 || $board[$r][$c] !== $player) {
-                return false;
-            }
-
-            $count++;
-        }
-
-        return $count === 4;
-    }
-
-    private function checkDraw(C4Game $game)
-    {
-        $board = json_decode($game->board, true);
-
-        foreach ($board as $row) {
-            if (in_array(null, $row, true)) {
-                return false;
+        for ($row = 0; $row < 6; $row++) {
+            for ($col = 0; $col < 7; $col++) {
+                if ($board[$row][$col] == 0) {
+                    return false; // Found empty cell, not a draw
+                }
             }
         }
+        return true; // Board is full, it's a draw
+    }
 
-        return true;
+
+    private function broadcastGameUpdate(C4Game $game, $event, $message = null)
+    {
+
+        $data = [
+            'game_id' => $game->id,
+            'board' => $game->board,
+            'current_turn' => $game->current_turn,
+            'message' => $message,
+        ];
+
+        $this->pusher->trigger('room.' . $game->room->id, $event, $data);
     }
 }

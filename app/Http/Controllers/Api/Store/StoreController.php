@@ -7,6 +7,7 @@ use App\DTOs\Store\UpdateStoreDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Store\CreateStoreRequest;
 use App\Http\Requests\Store\UpdateStoreRequest;
+use App\Http\Resources\Store\ShowStoreRequest;
 use App\Http\Resources\Store\StoreResource;
 use App\Models\Store;
 use App\Services\Store\Contracts\StoreServiceInterface;
@@ -41,7 +42,7 @@ class StoreController extends Controller
     #[Get('/{store}')]
     public function show(Store $store)
     {
-        return $this->success(data: new StoreResource($store));
+        return $this->success(data: new ShowStoreRequest($store));
     }
 
     #[Patch('/{store}')]

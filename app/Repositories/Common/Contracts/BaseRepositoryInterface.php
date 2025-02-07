@@ -20,6 +20,8 @@ interface BaseRepositoryInterface
 
     public function findBy(string $column, $value);
 
+    public function findOneBy(string $column, $value);
+
     public function paginate(int $perPage = 15);
 
     public function scope(callable $callback);

@@ -122,6 +122,7 @@ abstract class BaseDTO implements BaseDTOInterface
     public function set(string $property, mixed $value): self
     {
         if (property_exists($this, $property)) {
+
             $this->$property = $value;
         }
         return $this;

@@ -57,6 +57,10 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model->where($column, $value)->get();
     }
+    public function findOneBy(string $column, $value)
+    {
+        return $this->model->where($column, $value)->first();
+    }
 
     public function paginate(int $perPage = 15)
     {

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Room\Quiz;
+namespace App\Http\Resources\Ads;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AnswerResource extends JsonResource
+class AdResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +14,10 @@ class AnswerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return ["id" => $this->id, 'title' => $this->title, 'is_correct' => $this->is_correct];
+        return [
+            'title' => $this->title,
+            'path' => $this->path,
+            'is_image' => $this->is_img,
+        ];
     }
 }

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api\Ads;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Ads\AdResource;
 use App\Services\Ads\Contracts\AdsServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Prefix;
 
@@ -12,13 +15,13 @@ use Spatie\RouteAttributes\Attributes\Prefix;
 class AdsController extends Controller
 {
     public function __construct(private readonly AdsServiceInterface $adsService) {}
-    #[Get('/home')]
+    #[Get(uri: '/home', middleware: ['auth:sanctum'])]
     public function index(Request $request)
     {
         // TODO::UPDATE AVAILABLE TIME DAILY
-        $ads = $this->adsService->all();
+        $ads = $this->adsService->getRandomActive();
         $user = $request->user();
-
-        return $this->success(data: ['ads' => $ads, 'points' => $user->points, 'available_time' => $user->room->available_time]);
+        Log::alert($user);
+        return $this->success(data: ['ads' => AdResource::collection($ads), 'points' => $user->points, 'available_time' => $user->room?->available_time]);
     }
 }
