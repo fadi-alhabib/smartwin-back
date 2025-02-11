@@ -7,4 +7,5 @@ use App\Repositories\Common\Contracts\BaseRepositoryInterface;
 interface StoreRepositoryInterface extends BaseRepositoryInterface
 {
     public function fetchActive();
+    public function getMyStore(int $userId);
 }

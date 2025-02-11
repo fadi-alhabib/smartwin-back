@@ -1,21 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\Room\C4;
 
 use App\Models\C4Game;
 use App\Models\Room;
-use App\Events\GameUpdated; // We'll create this event later
+// We'll create this event later
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Pusher\Pusher;
+use Spatie\RouteAttributes\Attributes\Middleware;
+use Spatie\RouteAttributes\Attributes\Post;
+use Spatie\RouteAttributes\Attributes\Prefix;
 
-class GameController extends Controller
+#[Prefix('api/room/{room}/c4'), Middleware(['auth:sanctum'])]
+class C4GameController extends Controller
 {
     public function __construct(private readonly Pusher $pusher) {}
+
+    #[Post('/start')]
     public function startGame(Request $request, Room $room)
     {
+        $userId = $request->user()->id;
 
-        if ($room->host_id !== Auth::id()) {
+        if ($room->host_id !== $userId) {
             return $this->failed('Only the room host can start the game.', 403);
         }
 
@@ -23,26 +30,30 @@ class GameController extends Controller
             'room_id' => $room->id,
             'board' => $this->initializeBoard(),
             'challenger_id' => $request->challenged_id,
-            'current_turn' => $room->host_id, // Host starts first
+            'current_turn' => $userId, // Host starts first
         ]);
-
+        // return $this->success(["d" => $game], statusCode: 400);
         $this->pusher->trigger('room.' . $room->id, 'c4.started', [
             'game_id' => $game->id,
             'challenger_id' => $game->challenger_id,
-            'current_turn' => $room->current_turn,
+            'current_turn' => $userId,
         ]);
-        return $this->success(['message' => 'Game started.', 'game_id' => $game->id, 'current_turn' => $game->current_turn]);
+        return $this->success(['message' => 'Game started.', 'game_id' => $game->id, 'current_turn' => $userId, 'challenger_id' => $game->challenger_id,]);
     }
 
-    public function makeMove(Request $request, C4Game $game)
+    #[Post('/{gameId}/make-move')]
+    public function makeMove(Request $request, Room $room, int $gameId)
     {
+        $userId = $request->user()->id;
         $request->validate([
             'column' => 'required|integer|min:0|max:6',
         ]);
-        if ($game->current_turn !== Auth::id()) {
+        $c4game = C4Game::find($gameId);
+
+        if ($c4game->current_turn !== $userId) {
             return $this->failed('Not your turn.', 400);
         }
-        $board = $game->board;
+        $board = $c4game->board;
         $column = $request->column;
 
         $row = $this->getNextAvailableRow($board, $column);
@@ -50,25 +61,25 @@ class GameController extends Controller
             return $this->failed('Invalid move. Column is full.', 400);
         }
 
-        $player = ($game->current_turn == $game->room->host_id) ? 1 : 2; // 1 for host, 2 for challenger
+        $player = ($c4game->current_turn == $c4game->room->host_id) ? 1 : 2; // 1 for host, 2 for challenger
         $board[$row][$column] = $player;
-        $game->board = $board;
+        $c4game->board = $board;
 
         if ($this->checkWin($board, $player)) {
             $message = 'Player ' . $player . ' wins!';
-            $game->current_turn = null; // Game over
+            $c4game->current_turn = null; // c4game over
         } elseif ($this->checkDraw($board)) {
-            $message = 'Game draw!';
-            $game->current_turn = null; // Game over
+            $message = 'c4game draw!';
+            $c4game->current_turn = null; // c4game over
         } else {
-            $game->current_turn = ($game->current_turn == $game->room->host_id) ? $game->challenger_id : $game->room->host_id;
+            $c4game->current_turn = ($c4game->current_turn == $c4game->room->host_id) ? $c4game->challenger_id : $c4game->room->host_id;
             $message = 'Move made. Next turn.';
         }
 
-        $game->save();
-        $this->broadcastGameUpdate($game, 'move.made', $message);
+        $c4game->save();
+        $this->broadcastGameUpdate($c4game, 'move.made', $message);
 
-        return response()->json(['message' => $message, 'game_state' => $game, 'current_turn' => $game->current_turn]);
+        return response()->json(['message' => $message, 'game_state' => $c4game, 'current_turn' => $c4game->current_turn]);
     }
 
     public function getGame(C4Game $game)

@@ -9,8 +9,10 @@ class C4Game extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['room_id', 'host_id', 'challenger_id', 'board', 'current_turn'];
-
+    protected $fillable = ['room_id', 'board', 'challenger_id', 'current_turn'];
+    protected $casts = [
+        'board' => 'array',
+    ];
     public function room()
     {
         return $this->belongsTo(Room::class);

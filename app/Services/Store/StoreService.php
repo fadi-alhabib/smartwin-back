@@ -28,4 +28,9 @@ class StoreService extends CRUDService implements StoreServiceInterface
         $store = $this->repository->create($dto);
         return $store;
     }
+
+    public function getMyStore(int $userId)
+    {
+        return $this->getMyStore($userId);
+    }
 }

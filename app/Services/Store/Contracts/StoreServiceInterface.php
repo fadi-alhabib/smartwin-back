@@ -9,4 +9,5 @@ interface StoreServiceInterface extends CRUDServiceInterface
 {
     public function fetchActive();
     public function createWithImage(CreateStoreDto $dto);
+    public function getMyStore(int $userId);
 }

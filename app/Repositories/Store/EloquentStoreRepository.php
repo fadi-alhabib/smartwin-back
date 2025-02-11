@@ -17,4 +17,8 @@ class EloquentStoreRepository extends BaseRepository implements StoreRepositoryI
     {
         return $this->findBy('is_active', true);
     }
+    public function getMyStore(int $userId)
+    {
+        return $this->findOneBy('user_id', $userId);
+    }
 }

@@ -29,7 +29,18 @@ class StoreController extends Controller
         $stores = $this->storeService->all();
         return $this->success(data: StoreResource::collection($stores));
     }
+    #[Get('me', middleware: 'auth:sanctum')]
+    public function getMyStore(Request $request)
+    {
 
+        try {
+            $userId = $request->user()->id;
+            $store = $this->storeService->getMyStore($userId);
+            return $this->success(data: new StoreResource($store));
+        } catch (\Throwable $th) {
+            return $this->success($th, statusCode: 404);
+        }
+    }
     #[Post('/')]
     public function store(CreateStoreRequest $request)
     {
@@ -45,6 +56,7 @@ class StoreController extends Controller
         return $this->success(data: new ShowStoreRequest($store));
     }
 
+
     #[Patch('/{store}')]
     public function update(UpdateStoreRequest $request, Store $store)
     {
@@ -57,13 +69,5 @@ class StoreController extends Controller
     {
         $this->storeService->delete($store);
         return $this->success();
-    }
-
-    // TODO:: Test it when auth ready
-    #[Get('/mine')]
-    public function getMyStore(Request $request)
-    {
-        $store = $this->storeService->find($request->user()->store()->id);
-        return $this->success(data: new StoreResource($store));
     }
 }
