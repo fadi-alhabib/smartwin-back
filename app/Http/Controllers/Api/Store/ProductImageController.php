@@ -27,9 +27,16 @@ class ProductImageController extends Controller
     #[Delete('/batch')]
     public function deleteBatch(Request $request)
     {
-        Image::destroy($request->images);
-        return $this->success(message: "batch images deleted successfuly");
+        $validated = $request->validate([
+            'images' => 'required|array',
+            'images.*' => 'integer|exists:images,id'
+        ]);
+
+        Image::destroy($validated['images']);
+
+        return $this->success(message: "Batch images deleted successfully");
     }
+
 
     #[Post()]
     public function addImageToProduct(Request $request)
