@@ -38,7 +38,7 @@ class ProductImageController extends Controller
     }
 
 
-    #[Post()]
+    #[Post('/')]
     public function addImageToProduct(Request $request)
     {
         $validatedData = $request->validate([
