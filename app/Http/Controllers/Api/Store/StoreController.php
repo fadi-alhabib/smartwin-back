@@ -24,11 +24,16 @@ class StoreController extends Controller
     public function __construct(private readonly StoreServiceInterface $storeService) {}
 
     #[Get('/')]
-    public function index()
+    public function index(Request $request)
     {
-        $stores = $this->storeService->all();
+        $perPage = $request->get('per_page', 20);  // default to 20 if not provided
+        $page = $request->get('page', 1);  // default to the first page
+
+        $stores = Store::paginate($perPage, ['*'], 'page', $page);
+
         return $this->success(data: StoreResource::collection($stores));
     }
+
     #[Get('me', middleware: 'auth:sanctum')]
     public function getMyStore(Request $request)
     {

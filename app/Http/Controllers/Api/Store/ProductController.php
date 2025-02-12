@@ -24,11 +24,17 @@ class ProductController extends Controller
     public function __construct(private readonly ProductServiceInterface $productService) {}
 
     #[Get('/')]
-    public function index()
+    public function index(Request $request)
     {
-        $products = $this->productService->all();
+        $perPage = $request->get('per_page', 20);  // Default per page = 20
+        $page = $request->get('page', 1);  // Default page = 1
+
+        // Paginate the products
+        $products = Product::whereHas('images')->paginate($perPage, ['*'], 'page', $page);;
+
         return $this->success(data: ProductResource::collection($products));
     }
+
 
     #[Post('/')]
     public function store(CreateProductRequest $request)

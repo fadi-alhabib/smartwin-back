@@ -6,6 +6,8 @@ use App\Models\C4Game;
 use App\Models\Room;
 // We'll create this event later
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Pusher\Pusher;
 use Spatie\RouteAttributes\Attributes\Middleware;
@@ -65,12 +67,34 @@ class C4GameController extends Controller
         $board[$row][$column] = $player;
         $c4game->board = $board;
 
+        // TODO:: CALCULATE POINTS ON WIN
         if ($this->checkWin($board, $player)) {
             $message = 'Player ' . $player . ' wins!';
-            $c4game->current_turn = null; // c4game over
+            $winner = User::find($c4game->current_turn);
+            $winner->points += 10;
+            $winner->save();
+            $c4game->game_over = true;
+            $c4game->end_time = now();
+            $created_at = Carbon::parse($c4game->created_at);
+            $minutes_taken = (int) $created_at->diffInMinutes($c4game->end_time);
+            $room->available_time -= $minutes_taken;
+            if ($room->available_time <= 0) {
+                $room->available_time = 0;
+                $this->pusher->trigger('room.' . $room->id, 'no.time', []);
+            }
+            $room->save();
         } elseif ($this->checkDraw($board)) {
             $message = 'c4game draw!';
-            $c4game->current_turn = null; // c4game over
+            $c4game->game_over = true;
+            $c4game->end_time = now();
+            $created_at = Carbon::parse($c4game->created_at);
+            $minutes_taken = (int) $created_at->diffInMinutes($c4game->end_time);
+            $room->available_time -= $minutes_taken;
+            if ($room->available_time <= 0) {
+                $room->available_time = 0;
+                $this->pusher->trigger('room.' . $room->id, 'no.time', []);
+            }
+            $room->save();
         } else {
             $c4game->current_turn = ($c4game->current_turn == $c4game->room->host_id) ? $c4game->challenger_id : $c4game->room->host_id;
             $message = 'Move made. Next turn.';
