@@ -17,6 +17,8 @@ class Store extends Model
         'points',
         'is_active',
         'user_id',
+        'image',
+        'points',
     ];
 
     // Relationships

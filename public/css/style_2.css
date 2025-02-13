@@ -1,0 +1,17 @@
+.badge-success:hover{
+    background-color: var(--bs-danger);
+    cursor: pointer;
+    transition: all .3s ease-in;
+}
+
+
+.badge-danger:hover{
+    background-color: var(--bs-success);
+    cursor: pointer;
+    transition: all .3s ease-in;
+}
+
+.card img{
+    aspect-ratio: 3/2;
+    object-fit: contain;
+}

@@ -17,6 +17,7 @@ class MemoryImageService implements ImageServiceInterface
      */
     public function uploadImage(UploadedFile|array $images, string $path): string | array
     {
+
         if (is_array($images)) {
             $uploadedImages = [];
             foreach ($images as $image) {

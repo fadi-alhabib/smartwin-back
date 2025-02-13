@@ -46,11 +46,11 @@ class StoreController extends Controller
             return $this->success($th, statusCode: 404);
         }
     }
-    #[Post('/')]
+    #[Post('/', middleware: "auth:sanctum")]
     public function store(CreateStoreRequest $request)
     {
         $dto = CreateStoreDto::fromRequest($request);
-        $dto->set('user_id', $request->user()->id);
+        $dto->set('user_id',  $request->user()->id);
         $store = $this->storeService->createWithImage($dto);
         return $this->success(data: new StoreResource($store));
     }
