@@ -52,10 +52,13 @@ Route::get('/auth/google/callback', [DeleteAccountController::class, 'googleCall
 
 
 
-Route::middleware([IsAdmin::class])->group(function () {
+Route::group([], function () {
 
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+
+
 
     // Transfer Routes
 
@@ -150,11 +153,3 @@ Route::get('/deletedSuccessfuly', [DeleteAccountController::class, 'deletedSucce
 Route::get('/termsOfUse', function () {
     return view('termsOfUse');
 })->name('termsOfUse');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

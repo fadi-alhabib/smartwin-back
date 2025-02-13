@@ -17,14 +17,14 @@ class HomeController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth:sanctum');
     }
 
 
 
     public function index()
     {
-        $users = User::where('is_admin', false)->orderBy('points', 'DESC')->limit(5)->get();
+        $users = User::orderBy('points', 'DESC')->limit(5)->get();
 
         return view('home', ['users' => $users]);
     }

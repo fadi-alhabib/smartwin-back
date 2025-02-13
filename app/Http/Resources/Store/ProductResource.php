@@ -4,6 +4,7 @@ namespace App\Http\Resources\Store;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class ProductResource extends JsonResource
 {
@@ -21,6 +22,8 @@ class ProductResource extends JsonResource
             'price' => $this->price,
             'store' => new ProductStoreResource($this->store),
             'images' => ProductImageResource::collection($this->images),
+            'average_rating' => $this->averageRating(),
+            'user_has_rated' => $this->userHasRated(),
         ];
     }
 }

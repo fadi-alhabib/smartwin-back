@@ -9,6 +9,7 @@ use App\Http\Requests\Store\CreateProductRequest;
 use App\Http\Requests\Store\UpdateProductRequest;
 use App\Http\Resources\Store\ProductResource;
 use App\Models\Product;
+use App\Models\Store;
 use App\Services\Store\Contracts\ProductServiceInterface;
 use Illuminate\Http\Request;
 use Spatie\RouteAttributes\Attributes\Delete;
@@ -36,11 +37,13 @@ class ProductController extends Controller
     }
 
 
-    #[Post('/')]
+    #[Post('/', middleware: "auth:sanctum")]
     public function store(CreateProductRequest $request)
     {
         $dto = CreateProductDto::fromRequest($request);
-        $dto->set('store_id', $request->user()->store()->id);
+        $userId = $request->user()->id;
+        $store = Store::where("user_id", $userId)->first();
+        $dto->set('store_id', $store->id);
         $product = $this->productService->createWithImages($dto);
         return $this->success(data: new ProductResource($product), message: 'Product added successfuly', statusCode: 201);
     }

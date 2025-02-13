@@ -39,7 +39,7 @@ class MemoryImageService implements ImageServiceInterface
     private function uploadSingleImage(UploadedFile $image, string $path): string
     {
         // Generate a unique file name
-        $fileName = time() . '_' . $image->getClientOriginalName();
+        $fileName = time() . '.' . $image->getClientOriginalExtension();
 
         // Store the image in the public disk under the specified path
         $image->storeAs($path, $fileName, 'public');

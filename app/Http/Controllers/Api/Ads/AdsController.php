@@ -23,6 +23,6 @@ class AdsController extends Controller
         $ads = $this->adsService->getRandomActive();
         $user = $request->user();
         $room = Room::where('host_id', $user->id)->first();
-        return $this->success(data: ['ads' => AdResource::collection($ads), 'points' => $user->points, 'available_time' => $room->available_time, 'room_id' => $room->id]);
+        return $this->success(data: ['ads' => AdResource::collection($ads), 'points' => $user->points, 'available_time' => $room?->available_time, 'room_id' => $room?->id]);
     }
 }

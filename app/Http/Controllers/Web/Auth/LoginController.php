@@ -5,27 +5,37 @@ namespace App\Http\Controllers\Web\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('guest:admin')->except('logout');
+        $this->middleware('guest')->except('logout');
     }
 
     public function login(Request $request)
     {
-        $credentials = $request->only('username', 'password');
+        try {
+            $credentials = $request->only('username', 'password');
+            Log::error($credentials);
 
-        if (Auth::guard('admin')->attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('home');
+            if (auth()->guard('admin')->attempt(['username' => $credentials['username'], 'password' => $credentials['password']])) {
+                Log::alert('authenticated');
+                Log::alert(Auth::guard('admin')->user());
+                $request->session()->regenerate(destroy: true);
+                return redirect()->intended('home');
+            } else {
+                Log::alert('unauthenticated');
+            }
+
+            return back()->withErrors([
+                'username' => 'Invalid username or password.',
+            ]);
+        } catch (\Throwable $th) {
+            Log::error($th);
         }
-
-        return back()->withErrors([
-            'username' => 'Invalid username or password.',
-        ]);
     }
 
     public function logout()
@@ -33,5 +43,10 @@ class LoginController extends Controller
         Auth::guard('admin')->logout();
         Session::flush();
         return redirect('admin/login');
+    }
+
+    public function showLoginForm()
+    {
+        return view('auth.login'); // Ensure you have a view at resources/views/auth/login.blade.php
     }
 }

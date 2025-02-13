@@ -23,6 +23,7 @@ class StoreResource extends JsonResource
             'phone' => $this->phone,
             'owner' => $this->user->full_name,
             'image' => $this->image,
+            "points" => $this->points,
             'products' => StoreProductResource::collection($this->products),
         ];
     }
