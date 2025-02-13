@@ -64,7 +64,7 @@ return new class extends Migration {
             $table->string('image')->nullable();
             $table->bigInteger('points')->default(0);
             $table->boolean('is_active')->default(false);
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->unique();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
