@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Ads;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Ads\AdResource;
+use App\Models\Room;
 use App\Services\Ads\Contracts\AdsServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,7 @@ class AdsController extends Controller
         // TODO::UPDATE AVAILABLE TIME DAILY
         $ads = $this->adsService->getRandomActive();
         $user = $request->user();
-        Log::alert($user);
-        return $this->success(data: ['ads' => AdResource::collection($ads), 'points' => $user->points, 'available_time' => $user->room?->available_time]);
+        $room = Room::where('host_id', $user->id)->first();
+        return $this->success(data: ['ads' => AdResource::collection($ads), 'points' => $user->points, 'available_time' => $room->available_time, 'room_id' => $room->id]);
     }
 }

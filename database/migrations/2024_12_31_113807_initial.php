@@ -215,7 +215,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('image')->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->boolean('status')->default(true); // Default value for status
+            $table->boolean('status')->default(false); // Default value for status
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

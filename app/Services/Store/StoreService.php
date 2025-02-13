@@ -31,6 +31,6 @@ class StoreService extends CRUDService implements StoreServiceInterface
 
     public function getMyStore(int $userId)
     {
-        return $this->getMyStore($userId);
+        return $this->repository->getMyStore($userId);
     }
 }

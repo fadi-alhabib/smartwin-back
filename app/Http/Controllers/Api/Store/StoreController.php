@@ -34,7 +34,7 @@ class StoreController extends Controller
         return $this->success(data: StoreResource::collection($stores));
     }
 
-    #[Get('me', middleware: 'auth:sanctum')]
+    #[Get('/me', middleware: 'auth:sanctum')]
     public function getMyStore(Request $request)
     {
 

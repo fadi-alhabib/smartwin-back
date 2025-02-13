@@ -20,7 +20,6 @@ trait ResponseTrait
         return response()->json([
             'success' => false,
             'message' => $message,
-            'data' => null
         ], $statusCode);
     }
 }
