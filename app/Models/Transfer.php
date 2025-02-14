@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transfer extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'country', 'phone', 'points'];
+    protected $fillable = ['user_id', 'country', 'phone', 'points', 'done'];
 
     // Relationships
     public function user()

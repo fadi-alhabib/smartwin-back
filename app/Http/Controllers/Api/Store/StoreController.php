@@ -10,6 +10,7 @@ use App\Http\Requests\Store\UpdateStoreRequest;
 use App\Http\Resources\Store\ShowStoreRequest;
 use App\Http\Resources\Store\StoreResource;
 use App\Models\Store;
+use App\Services\Common\Contracts\ImageServiceInterface;
 use App\Services\Store\Contracts\StoreServiceInterface;
 use Illuminate\Http\Request;
 use Spatie\RouteAttributes\Attributes\Delete;
@@ -17,11 +18,16 @@ use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Patch;
 use Spatie\RouteAttributes\Attributes\Post;
 use Spatie\RouteAttributes\Attributes\Prefix;
+use Spatie\RouteAttributes\Attributes\Put;
 
 #[Prefix('api/stores')]
 class StoreController extends Controller
 {
-    public function __construct(private readonly StoreServiceInterface $storeService) {}
+    public function __construct(
+        private readonly StoreServiceInterface $storeService,
+        private readonly ImageServiceInterface $imageService,
+    ) {}
+
 
     #[Get('/')]
     public function index(Request $request)
@@ -57,6 +63,19 @@ class StoreController extends Controller
         return $this->success(data: new StoreResource($store));
     }
 
+    #[Post('/{store}')]
+    public function update(UpdateStoreRequest $request, Store $store)
+    {
+        $validatedData = $request->validated();
+        $dto = UpdateStoreDto::fromArray($validatedData);
+        if ($request->file('image') && $request->file('image') !== null) {
+            $image = $this->imageService->uploadImage($request->file('image'), '/store');
+            $dto->set('image', $image);
+        }
+        $this->storeService->update($store, $dto);
+        return $this->success();
+    }
+
     #[Get('/{store}')]
     public function show(Store $store)
     {
@@ -64,13 +83,6 @@ class StoreController extends Controller
     }
 
 
-    #[Patch('/{store}')]
-    public function update(UpdateStoreRequest $request, Store $store)
-    {
-        $dto = UpdateStoreDto::fromRequest($request);
-        $this->storeService->update($store, $dto);
-        return $this->success();
-    }
     #[Delete('/{store}')]
     public function destroy(Request $request, Store $store)
     {

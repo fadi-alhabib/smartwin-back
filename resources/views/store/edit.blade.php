@@ -45,10 +45,10 @@
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
 
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="phone" class="from-label">رقم الهاتف</label>
                         <input name="phone" id="phone" type="number" class="form-control input-default " placeholder="" value="{{ $store->phone }}" required>
-                    </div>
+                    </div> --}}
 
                     @error('phone')
                     <div class="alert alert-danger">{{ $message }}</div>

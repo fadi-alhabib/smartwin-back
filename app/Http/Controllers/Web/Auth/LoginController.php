@@ -12,7 +12,7 @@ class LoginController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
     }
 
     public function login(Request $request)
@@ -21,10 +21,10 @@ class LoginController extends Controller
             $credentials = $request->only('username', 'password');
             Log::error($credentials);
 
-            if (auth()->guard('admin')->attempt(['username' => $credentials['username'], 'password' => $credentials['password']])) {
+            if (auth('admin')->attempt(['username' => $credentials['username'], 'password' => $credentials['password']])) {
                 Log::alert('authenticated');
                 Log::alert(Auth::guard('admin')->user());
-                $request->session()->regenerate(destroy: true);
+                $request->session()->regenerate();
                 return redirect()->intended('home');
             } else {
                 Log::alert('unauthenticated');

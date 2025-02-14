@@ -80,6 +80,7 @@ class C4GameController extends Controller
             $room->available_time -= $minutes_taken;
             if ($room->available_time <= 0) {
                 $room->available_time = 0;
+                $room->consumed_at = now();
                 $this->pusher->trigger('room.' . $room->id, 'no.time', []);
             }
             $room->save();
@@ -92,6 +93,7 @@ class C4GameController extends Controller
             $room->available_time -= $minutes_taken;
             if ($room->available_time <= 0) {
                 $room->available_time = 0;
+                $room->consumed_at = now();
                 $this->pusher->trigger('room.' . $room->id, 'no.time', []);
             }
             $room->save();

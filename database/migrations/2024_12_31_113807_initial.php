@@ -33,6 +33,7 @@ return new class extends Migration {
             $table->string('country');
             $table->string('phone');
             $table->bigInteger('points')->default(0);
+
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -42,17 +43,7 @@ return new class extends Migration {
             $table->index('country');
         });
 
-        Schema::create('transfer_requests', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->bigInteger('points')->default(0);
-            $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
-            // Index on frequently queried columns
-            $table->index('user_id');
-        });
 
         Schema::create('stores', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -153,7 +144,8 @@ return new class extends Migration {
             $table->string('image');
             $table->boolean('online')->default(true); // Default value for online
             $table->unsignedBigInteger('host_id');
-            $table->integer('available_time')->default(20);
+            $table->integer('available_time')->default(12);
+
             $table->timestamps();
 
             $table->foreign('host_id')->references('id')->on('users')->onDelete('cascade');

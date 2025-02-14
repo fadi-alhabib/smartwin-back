@@ -4,83 +4,102 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Transfer;
-use App\Models\TransferRequest;
 use App\Models\Point;
 
 class TransferController extends Controller
 {
-
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:admin');
     }
 
-
+    /**
+     * Display the conversion rate settings.
+     */
     public function points()
     {
         return view('transfer.points');
     }
 
+    // /**
+    //  * Update the conversion rate (if using a Point model/table).
+    //  */
+    // public function update_point(Request $request)
+    // {
+    //     Point::where('id', 1)->update([
+    //         'equal' => $request->equal,
+    //     ]);
 
-    public function update_point(Request $request)
-    {
-        Point::where('id', 1)->UPDATE([
-            'equal' => $request->equal
-        ]);
+    //     return back();
+    // }
 
-
-        return back();
-    }
-
-
+    /**
+     * Display all transfers.
+     */
     public function transfer()
     {
-        $transfers = Transfer::all();
+        // Retrieve completed transfers (where done is true) along with user details
+        $transfers = Transfer::where("done", true)
+            ->join('users', 'users.id', '=', 'transfers.user_id')
+            ->get([
+                'transfers.points',
+                'transfers.created_at',
+                'transfers.phone',
+                'transfers.country',
+                'users.full_name',
+                'users.email'
+            ]);
 
-        return view('transfer.transfer', ['transfers' => $transfers]);
+
+        return view('transfer.transfer', compact('transfers'));
     }
 
-    public function transfer_request()
+
+    /**
+     * Display pending transfers (transfers not yet marked as done).
+     * Uses the old view name "transfer.transfer-request" for consistency.
+     */
+    public function pendingTransfers()
     {
-        $transfers = TransferRequest::join('users', 'users.id', '=', 'transfer_requests.user_id')->get(['first_name', 'last_name', 'username', 'email', 'country', 'transfer_requests.id', 'transfer_requests.points', 'amount', 'transfer_requests.created_at']);
+        $transfers = Transfer::where('done', false)
+            ->join('users', 'users.id', '=', 'transfers.user_id')
+            ->get([
+                'users.full_name',
+                'users.email',
+                'users.phone',
+                'users.country',
+                'transfers.id',
+                'transfers.points',
+                'transfers.created_at'
+            ]);
 
         return view('transfer.transfer-request', ['transfers' => $transfers]);
     }
 
+    /**
+     * Delete a transfer record.
+     */
     public function destroy_transfer($id)
     {
         Transfer::where('id', $id)->delete();
-
         return redirect('/transfer');
     }
 
-    public function destroy_transfer_request($id)
-    {
-        TransferRequest::where('id', $id)->delete();
-
-        return redirect('/transferRequest');
-    }
-
+    /**
+     * Mark a pending transfer as done.
+     * This method is now named "transfer_done" to match the route used in your view.
+     */
     public function transfer_done($id)
     {
-        $transfer_request = TransferRequest::where('transfer_requests.id', $id)->join('users', 'users.id', '=', 'transfer_requests.user_id')->get(['user_id', 'users.first_name', 'users.last_name', 'users.email', 'users.country', 'transfer_requests.points', 'amount']);
+        $transfer = Transfer::find($id);
 
+        if (!$transfer) {
+            return redirect()->back()->withErrors('Transfer not found.');
+        }
 
-        Transfer::create([
-            'user_id',
-            $transfer_request[0]->user_id,
-            'username' => $transfer_request[0]->first_name . ' ' . $transfer_request[0]->last_name,
-            'phone' => $transfer_request[0]->email,
-            'country' => $transfer_request[0]->country,
-            'points' => $transfer_request[0]->points,
-            'amount' => $transfer_request[0]->amount
-        ]);
-
-        TransferRequest::where('id', $id)->delete();
-
+        $transfer->update(['done' => true]);
 
         return redirect('/transferRequest');
     }

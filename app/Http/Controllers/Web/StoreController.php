@@ -13,7 +13,7 @@ class StoreController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:admin');
     }
     /**
      * Display a listing of the resource.
@@ -111,7 +111,7 @@ class StoreController extends Controller
         $store->type = $request->input('type');
         $store->country = $request->input('country');
         $store->address = $request->input('address');
-        $store->phone = $request->input('phone');
+        // $store->phone = $request->input('phone');
         $store->points = $request->input('points');
         $store->is_active = $request->input('is_active') == "on";
         $store->save();

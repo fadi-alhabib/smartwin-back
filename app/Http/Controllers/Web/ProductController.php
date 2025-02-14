@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:admin');
     }
     /**
      * Display a listing of the resource.
@@ -90,7 +90,7 @@ class ProductController extends Controller
         foreach ($dbimages as $image) {
             array_push($images, $image->image);
         }
-        array_unshift($images, $product->image);
+        array_unshift($images);
         return view('product.show', ["images" => $images, "product" => $product]);
     }
 

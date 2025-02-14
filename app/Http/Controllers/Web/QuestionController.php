@@ -12,14 +12,10 @@ use Carbon\Carbon;
 
 class QuestionController extends Controller
 {
-
-
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:admin');
     }
-
-
 
     public function index()
     {
@@ -28,117 +24,72 @@ class QuestionController extends Controller
         return view('questions.question', ['questions' => $questions]);
     }
 
-
     public function create()
     {
         return view('questions.create');
     }
 
-
     public function store(Request $request)
     {
-
+        // Optional: Validate your inputs including the image file
         // $validator = Validator::make($request->all(), [
         //     'title' => 'required',
         //     'correct_answer' => 'required',
         //     'wrong_answer' => 'required',
+        //     'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
         // ],
         // [
         //     'title.required' => 'هذا الحقل مطلوب',
-        //     'correct.required' => 'هذا الحقل مطلوب',
-        //     'wrong.required' => 'هذا الحقل مطلوب',
-        // ]
-        // );
-
-
-        // if($validator->fails())
-        // {
-        //     return back()->withErrors($validator)->withInputs($request->all());
+        //     'correct_answer.required' => 'هذا الحقل مطلوب',
+        //     'wrong_answer.required' => 'هذا الحقل مطلوب',
+        // ]);
+        // if($validator->fails()) {
+        //     return back()->withErrors($validator)->withInput();
         // }
 
-
+        // Handle file upload if an image is provided
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            // Move the file to the public/images folder
+            $file->move(public_path('images'), $filename);
+            $imagePath = 'images/' . $filename;
+        }
 
         $question_id = Question::insertGetId([
-            'title' => $request->title,
-            'user_id' => Auth::id(),
+            'title'      => $request->title,
+            'image'      => $imagePath, // Save image path or null
+            'user_id'    => Auth::id(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
 
-
-
-
-
-        // $correct = json_decode($request->correct_answer);
-
-        // $correct_answer = [];
-
-
-        // foreach($correct as $title)
-        // {
-        //     $answer = [];
-
-        //     $answer['title'] = $title;
-        //     $answer['question_id'] = $question_id;
-        //     $answer['is_correct'] = true;
-
-        //     array_push($correct_answer, $answer);
-        // }
-
-        // Answer::insert($correct_answer);
-
-
-
-
-
-
-        // $wrong = json_decode($request->wrong_answer);
-
-        // $wrong_answer = [];
-
-
-        // foreach($wrong as $title)
-        // {
-        //     $answer = [];
-
-        //     $answer['title'] = $title;
-        //     $answer['question_id'] = $question_id;
-        //     $answer['is_correct'] = false;
-
-        //     array_push($wrong_answer, $answer);
-        // }
-
-        // Answer::insert($wrong_answer);
-
-
-
-
-
         Answer::insert(
             [
                 [
-                    'title' => $request->correct_answer,
+                    'title'      => $request->correct_answer,
                     'question_id' => $question_id,
                     'is_correct' => true,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ],
                 [
-                    'title' => $request->wrong_answer_1,
+                    'title'      => $request->wrong_answer_1,
                     'question_id' => $question_id,
                     'is_correct' => false,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ],
                 [
-                    'title' => $request->wrong_answer_2,
+                    'title'      => $request->wrong_answer_2,
                     'question_id' => $question_id,
                     'is_correct' => false,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ],
                 [
-                    'title' => $request->wrong_answer_3,
+                    'title'      => $request->wrong_answer_3,
                     'question_id' => $question_id,
                     'is_correct' => false,
                     'created_at' => Carbon::now(),
@@ -147,13 +98,8 @@ class QuestionController extends Controller
             ]
         );
 
-
         return redirect('question/create');
-
-
-        // dd($request);
     }
-
 
     public function show($id)
     {
@@ -163,9 +109,12 @@ class QuestionController extends Controller
 
         $wrong_answers = Answer::where('question_id', $id)->where('is_correct', 0)->get();
 
-        return view('questions.show', ['question' => $question, 'correct_answers' => $correct_answers, 'wrong_answers' => $wrong_answers]);
+        return view('questions.show', [
+            'question'         => $question,
+            'correct_answers'  => $correct_answers,
+            'wrong_answers'    => $wrong_answers
+        ]);
     }
-
 
     public function edit($id)
     {
@@ -175,50 +124,69 @@ class QuestionController extends Controller
 
         $wrong_answer = Answer::where('question_id', $id)->where('is_correct', false)->get();
 
-        return view('questions.edit', ['question' => $question, 'correct_answer' => $correct_answer, 'wrong_answer' => $wrong_answer, 'id' => $id]);
+        return view('questions.edit', [
+            'question'         => $question,
+            'correct_answer'   => $correct_answer,
+            'wrong_answer'     => $wrong_answer,
+            'id'               => $id
+        ]);
     }
-
 
     public function update(Request $request, $id)
     {
-
-
+        // Optional: Validate your inputs including the image file
         // $validator = Validator::make($request->all(), [
-        //     'title' => 'required'
+        //     'title' => 'required',
+        //     'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
         // ]);
+        // if($validator->fails()) {
+        //     return back()->withErrors($validator)->withInput();
+        // }
 
-        Question::where('id', $id)->update([
-            'title' => $request->title
-        ]);
+        // Prepare the data to update
+        $data = [
+            'title'      => $request->title,
+            'updated_at' => Carbon::now(),
+        ];
 
+        // Check if a new image file is uploaded
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images'), $filename);
+            $data['image'] = 'images/' . $filename;
+        }
+
+        Question::where('id', $id)->update($data);
+
+        // Remove old answers and re-insert new ones
         Answer::where('question_id', $id)->delete();
-
 
         Answer::insert(
             [
                 [
-                    'title' => $request->correct_answer,
+                    'title'      => $request->correct_answer,
                     'question_id' => $id,
                     'is_correct' => true,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ],
                 [
-                    'title' => $request->wrong_answer_1,
+                    'title'      => $request->wrong_answer_1,
                     'question_id' => $id,
                     'is_correct' => false,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ],
                 [
-                    'title' => $request->wrong_answer_2,
+                    'title'      => $request->wrong_answer_2,
                     'question_id' => $id,
                     'is_correct' => false,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ],
                 [
-                    'title' => $request->wrong_answer_3,
+                    'title'      => $request->wrong_answer_3,
                     'question_id' => $id,
                     'is_correct' => false,
                     'created_at' => Carbon::now(),
@@ -227,16 +195,8 @@ class QuestionController extends Controller
             ]
         );
 
-
         return redirect('question');
-
-
-
-        // return back();
-
-        // dd($request);
     }
-
 
     public function destroy($id)
     {
@@ -247,12 +207,9 @@ class QuestionController extends Controller
         return redirect('question');
     }
 
-
-
-
     public function status(Request $request)
     {
-        Question::where('id', $request->question_id)->UPDATE([
+        Question::where('id', $request->question_id)->update([
             'status' => $request->status
         ]);
 

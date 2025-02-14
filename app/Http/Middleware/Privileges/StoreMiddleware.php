@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware\Privileges;
 
+use App\Models\AdminPrivilege;
 use App\Models\UserPrivilege;
 use Closure;
 use Illuminate\Http\Request;
@@ -17,9 +18,9 @@ class StoreMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $user_id = auth()->user()->id;
+        $user_id = auth('admin')->user()->id;
 
-        $user_privilege = UserPrivilege::where('user_id', $user_id)->where('privilege_id', 7)->count();
+        $user_privilege = AdminPrivilege::where('admin_id', $user_id)->where('privilege_id', 6)->count();
 
         if ($user_privilege > 0) {
             return $next($request);

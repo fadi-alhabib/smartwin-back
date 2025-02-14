@@ -20,7 +20,7 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        Log::error("from guyes");
+
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {

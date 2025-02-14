@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Laravel\Socialite\Facades\Socialite;
 use Spatie\RouteAttributes\Attributes\Post;
 use Spatie\RouteAttributes\Attributes\Prefix;
 
@@ -32,12 +33,11 @@ class AuthController extends Controller
             return $this->failed($th, 500);
         }
     }
+
     #[Post('/send-otp')]
     public function sendOtp(SendOtpRequest $request)
     {
         $data = $request->validated();
-
-
         $otp = rand(100000, 999999);
         $expiresAt = now()->addMinutes(15);
 
@@ -46,23 +46,13 @@ class AuthController extends Controller
             ['otp' => $otp, 'otp_expires_at' => $expiresAt]
         );
 
-        // Send OTP using Twilio
-        // $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
-        // $twilio->messages->create(
-        //     $user->phone,
-        //     [
-        //         'from' => env('TWILIO_PHONE_NUMBER'),
-        //         'body' => "Your OTP is $otp. It expires in 10 minutes."
-        //     ]
-        // );
-
         return $this->success(message: 'OTP sent successfully.');
     }
+
     #[Post('/verify-otp')]
     public function verifyOtp(VerifyOtpRequest $request)
     {
         $data = $request->validated();
-
         $user = User::where('phone', $data['phone'])->first();
 
         if (!$user || $user->otp !== $data['otp'] || Carbon::parse($user->otp_expires_at)->isPast()) {
@@ -76,5 +66,39 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return $this->success(data: ['token' => $token, 'user' => $user]);
+    }
+
+    #[Post('/google-redirect')]
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->stateless()->redirect();
+    }
+
+    #[Post('/google-callback')]
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+
+            $email = $googleUser->getEmail() ?? 'google_' . $googleUser->getId() . '@noemail.com';
+
+            $user = User::updateOrCreate(
+                ['email' => $email],
+                [
+                    'full_name' => $googleUser->getName(),
+                    'google_id' => $googleUser->getId(),
+                    'avatar' => $googleUser->getAvatar(),
+                    'is_active' => true,
+                    'provider' => 'google',
+                ]
+            );
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return $this->success(data: ['token' => $token, 'user' => $user]);
+        } catch (\Throwable $th) {
+            Log::emergency($th);
+            return $this->failed(message: 'Google authentication failed.', statusCode: 500);
+        }
     }
 }

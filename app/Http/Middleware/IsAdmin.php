@@ -15,11 +15,11 @@ class IsAdmin
     public function handle(Request $request, Closure $next)
     {
         Log("from isAdmin");
-        $id = Auth::id();
+        $id = Auth::guard('admin')->id();
 
-        $user = Admin::where('id', $id)->get();
+        $user = Admin::where('id', $id)->first();
 
-        if ($user[0]->is_admin) {
+        if ($user) {
             // Auth::logout();
 
             return $next($request);

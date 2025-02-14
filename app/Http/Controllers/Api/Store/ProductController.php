@@ -54,7 +54,7 @@ class ProductController extends Controller
         return $this->success(data: new ProductResource($product));
     }
 
-    #[Patch('/{product}')]
+    #[Post('/{product}')]
     public function update(UpdateProductRequest $request, Product $product)
     {
         $dto = UpdateProductDto::fromRequest($request);

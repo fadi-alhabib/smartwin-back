@@ -13,7 +13,7 @@ class UpdateStoreDto extends BaseDTO
         public ?string $address = null,
         public ?string $phone = null,
         // TODO::
-        // public UploadedFile | string | null $image = null,
+        public UploadedFile | string | null $image = null,
 
     ) {}
 }

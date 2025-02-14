@@ -4,63 +4,46 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-
-    // Except show from resource route
-
-
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:admin');
     }
-
-
 
     public function index()
     {
-
-        $admins = User::where('is_admin', true)->get();
+        // Retrieve all admins from the admins table
+        $admins = Admin::all();
 
         return view('users.admin', ['admins' => $admins]);
     }
-
-
-
 
     public function create()
     {
         return view('users.create-admin');
     }
 
-
-
-
-
     public function store(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
             [
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'username' => 'required|unique:users',
-                'password' => 'required|min:8|confirmed',
-                'phone' => 'required',
+                'full_name' => 'required',
+                'username'  => 'required|unique:admins',
+                'password'  => 'required|min:8|confirmed',
             ],
             [
-                'first_name.required' => 'حقل الاسم الأول مطلوب',
-                'last_name.required' => 'حقل الاسم الأخير مطلوب',
-                'username.required' => 'حقل اسم المستخدم مطلوب',
-                'username.unique' => 'اسم المستخدم هذا مستخدم من قبل',
-                'password.required' => 'حقل كلمة المرور مطلوب',
-                'password.min' => 'كلمة المرور يجب ألا تقل عن 8 محارف',
+                'full_name.required' => 'حقل الاسم مطلوب',
+                'username.required'  => 'حقل اسم المستخدم مطلوب',
+                'username.unique'    => 'اسم المستخدم هذا مستخدم من قبل',
+                'password.required'  => 'حقل كلمة المرور مطلوب',
+                'password.min'       => 'كلمة المرور يجب ألا تقل عن 8 محارف',
                 'password.confirmed' => 'لم تتطابق كلمة المرور',
-                'phone.required' => 'حقل الهاتف مطلوب'
             ]
         );
 
@@ -68,45 +51,36 @@ class AdminController extends Controller
             return back()->withErrors($validator)->withInput($request->all());
         }
 
-        User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-            'is_admin' => 1
+        Admin::create([
+            'full_name' => $request->full_name,
+            'username'  => $request->username,
+            'password'  => Hash::make($request->password),
         ]);
 
         return redirect('admin');
     }
 
-
-    public function show($id) {}
-
-
+    public function show($id)
+    {
+        // Not implemented as per resource route convention.
+    }
 
     public function edit($id)
     {
-        $admin = User::where('id', $id)->get();
+        $admin = Admin::findOrFail($id);
 
         return view('users.edit-admin', ['admin' => $admin]);
     }
-
-
 
     public function update(Request $request, $id)
     {
         $validator = Validator::make(
             $request->all(),
             [
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'phone' => 'required',
+                'full_name' => 'required',
             ],
             [
-                'first_name.required' => 'حقل الاسم الأول مطلوب',
-                'last_name.required' => 'حقل الاسم الأخير مطلوب',
-                'phone.required' => 'حقل الهاتف مطلوب'
+                'full_name.required' => 'حقل الاسم مطلوب',
             ]
         );
 
@@ -114,22 +88,18 @@ class AdminController extends Controller
             return back()->withErrors($validator)->withInput($request->all());
         }
 
-
-        $admin = [
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'phone' => $request->phone
+        $data = [
+            'full_name' => $request->full_name,
         ];
-
 
         if (!empty($request->password)) {
             $passwordValidator = Validator::make(
                 $request->all(),
                 [
-                    'password' => 'min:8|confirmed'
+                    'password' => 'min:8|confirmed',
                 ],
                 [
-                    'password.min' => 'يجب ألا تقل كلمة المرور عن 8 محارف',
+                    'password.min'       => 'يجب ألا تقل كلمة المرور عن 8 محارف',
                     'password.confirmed' => 'لم تتطابق كلمة المرور',
                 ]
             );
@@ -138,20 +108,18 @@ class AdminController extends Controller
                 return back()->withErrors($passwordValidator);
             }
 
-            $admin['password'] = Hash::make($request->password);
+            $data['password'] = Hash::make($request->password);
         }
 
-        User::where('id', $id)->update($admin);
+        Admin::where('id', $id)->update($data);
 
         return redirect('admin');
     }
 
-
-
     public function destroy($id)
     {
-        User::where('id', $id)->delete();
+        Admin::destroy($id);
 
-        return redirect('user');
+        return redirect('admin');
     }
 }

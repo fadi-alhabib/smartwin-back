@@ -52,7 +52,7 @@ Route::get('/auth/google/callback', [DeleteAccountController::class, 'googleCall
 
 
 
-Route::group([], function () {
+Route::group([IsAdmin::class], function () {
 
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -66,7 +66,7 @@ Route::group([], function () {
 
         Route::get('/transfer', [TransferController::class, 'transfer'])->name('transfer');
 
-        Route::get('/transferRequest', [TransferController::class, 'transfer_request'])->name('transferRequest');
+        Route::get('/transferRequest', [TransferController::class, 'pendingTransfers'])->name('transferRequest');
 
         Route::post('/deleteTransfer/{id}', [TransferController::class, 'destroy_transfer'])->name('deleteTransfer');
 

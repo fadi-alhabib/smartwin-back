@@ -17,7 +17,7 @@
                                 <tr>
                                     <th><strong>العمليات</strong></th>
                                     <th><strong>الحالة</strong></th>
-                                    <th><strong>عدد التقييمات</strong></th>
+                               
                                     <th><strong>التقييم</strong></th>
                                     <th><strong>البلد</strong></th>
                                     <th><strong>العنوان</strong></th>
@@ -44,7 +44,7 @@
 
                                     </td>
                                     <td><span class="badge {{ $store->is_active === 0 ? 'badge-danger' : 'badge-success'}}">{{ $store->is_active===0 ?"غير مفعل":"مفعل"}}</span></td>
-                                    <td><strong>{{ $store->ratings_count }}</strong></td>
+                                   
                                     <td>
                                         @for($i=0;$i<(int)(5 - $store->rating);$i++) <span class="fa fa-star "></span>@endfor
                                             @for ($i= 0;$i<(int)($store->rating);$i++) <span class="fa fa-star checked"></span>@endfor
