@@ -22,6 +22,7 @@ class User extends Authenticatable
         'is_active',
         'otp',
         'otp_expires_at',
+        'image',
     ];
 
     protected $hidden = [
@@ -39,10 +40,10 @@ class User extends Authenticatable
         return $this->hasMany(Transfer::class);
     }
 
-    public function transferRequests()
-    {
-        return $this->hasMany(TransferRequest::class);
-    }
+    // public function transferRequests()
+    // {
+    //     return $this->hasMany(TransferRequest::class);
+    // }
 
     public function stores()
     {
@@ -67,5 +68,10 @@ class User extends Authenticatable
     public function ratings()
     {
         return $this->hasMany(ProductRating::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 }

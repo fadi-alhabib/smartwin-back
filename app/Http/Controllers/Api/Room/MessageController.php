@@ -8,19 +8,20 @@ use App\Http\Requests\Room\Messages\CreateMessageRequest;
 use App\Http\Resources\Room\Messages\MessageResource;
 use App\Models\Message;
 use App\Models\Room;
-
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Pusher\Pusher;
 use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Post;
 use Spatie\RouteAttributes\Attributes\Prefix;
 
-#[Prefix('api/messages')]
+#[Prefix('api/messages/rooms')]
 class MessageController extends Controller
 {
     public function __construct(private readonly Pusher $pusher) {}
 
-    #[Post(uri: '/rooms/{room}', middleware: ['auth:sanctum'])]
+    #[Post(uri: '/{room}', middleware: ['auth:sanctum'])]
     public function store(Room $room, CreateMessageRequest $request)
     {
         $message = Message::create([
@@ -34,7 +35,16 @@ class MessageController extends Controller
 
         return response()->json(new MessageResource($message));
     }
-
+    #[Get(uri: '/active-users', middleware: "auth:sanctum")]
+    public function getActiveUsers(Request $request)
+    {
+        $roomId = Room::where('host_id', $request->user()->id)->first()->id;
+        $users = User::whereNot('id', $request->user()->id)->whereHas('messages', function ($query) use ($roomId) {
+            $query->where('room_id', $roomId)
+                ->where('created_at', '>=', Carbon::now()->subMinutes(15));
+        })->get();
+        return $this->success($users);
+    }
     #[Get(uri: '/rooms/{room}', middleware: ['auth:sanctum'])]
     public function index(Room $room)
     {

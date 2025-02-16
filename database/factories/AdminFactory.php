@@ -9,10 +9,11 @@ class AdminFactory extends Factory
 {
     public function definition()
     {
+
         return [
-            'full_name' => $this->faker->name,
-            'username' => $this->faker->unique()->userName,
-            'password' => bcrypt('password'), // password
+            'full_name' => "fadi",
+            'username' => "fadi",
+            'password' => bcrypt('fadiadminpassword.password'), // password
         ];
     }
 }

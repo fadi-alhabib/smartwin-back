@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\SendOtpRequest;
 use App\Http\Requests\Auth\VerifyOtpRequest;
 use App\Models\User;
+use App\Services\Common\Contracts\ImageServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -17,6 +18,9 @@ use Spatie\RouteAttributes\Attributes\Prefix;
 #[Prefix('api/auth')]
 class AuthController extends Controller
 {
+    public function __construct(
+        private readonly ImageServiceInterface $imageService,
+    ) {}
     #[Post('/register')]
     public function register(RegisterRequest $request)
     {
@@ -100,5 +104,20 @@ class AuthController extends Controller
             Log::emergency($th);
             return $this->failed(message: 'Google authentication failed.', statusCode: 500);
         }
+    }
+
+    #[Post('/profile-image', middleware: 'auth:sanctum')]
+    public function uploadProfile(Request $request)
+    {
+        $user = $request->user();
+        $validator = $request->validate([
+            'image' => 'required|image|max:2024'
+        ]);
+        if ($request->file('image')) {
+            $imagePath = $this->imageService->uploadImage($request->file('image'), '/users');
+            $user->image = $imagePath;
+            $user->save();
+        }
+        return $this->success(["image" => $imagePath]);
     }
 }

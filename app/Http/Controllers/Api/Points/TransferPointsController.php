@@ -26,7 +26,6 @@ class TransferPointsController extends Controller
     {
         // Validate incoming request data
         $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'country' => 'required|string',
             'phone'   => 'required|string',
             'points'  => 'required|integer|min:1000',
@@ -34,6 +33,7 @@ class TransferPointsController extends Controller
         $user = $request->user();
         if ($data['points'] >= 1000 && $user->points >= $data['points']) {
             $user->points -= $data['points'];
+            $data['user_id'] = $user->id;
             $user->save();
         } else {
             return $this->failed('ليس لديك نقاط كافية', 400);

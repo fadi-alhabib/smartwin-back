@@ -9,7 +9,9 @@ class Room extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'image', 'online', 'owner_id', 'available_time', 'host_id'];
-
+    protected $casts = [
+        'online' => "bool",
+    ];
     // Relationships
     public function owner()
     {

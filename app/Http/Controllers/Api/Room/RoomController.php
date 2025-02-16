@@ -42,19 +42,16 @@ class RoomController extends Controller
         return $this->success(data: new RoomResource($room));
     }
 
-    #[Get(uri: '{room}/offline', middleware: ['auth:sanctum'])]
-    public function goOffline(Request $request, Room $room)
+    #[Get(uri: '/offline', middleware: ['auth:sanctum'])]
+    public function goOffline(Request $request)
     {
         $userId = $request->user()->id;
-        if ($room->host_id !== $userId) {
-            $this->failed('you are not the host', 403);
+        $room = Room::where('host_id', $userId)->first();
+        if ($room) {
+            $room->online = false;
+            $room->save();
+            $this->pusher->trigger('room.' . $room->id, 'room.offline', []);
         }
-        $room->online = false;
-
-        $room->save();
-
-        $this->pusher->trigger('room.' . $room->id, 'room.offline', []);
-
         return $this->success(data: null, message: "connection closed", statusCode: 200);
     }
 

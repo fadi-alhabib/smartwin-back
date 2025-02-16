@@ -34,6 +34,17 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+
+Route::get('/storage/{folder}/{filename}', function ($folder, $filename) {
+    $path = storage_path('app/public/' . $folder . '/' . $filename);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+});
+
 Route::get('/', function () {
     return redirect('login');
 });
@@ -41,9 +52,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout']);
 
 
 Route::get('/auth/google', [DeleteAccountController::class, 'google'])->name('google');

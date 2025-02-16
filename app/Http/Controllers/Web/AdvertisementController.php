@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Advertisement;
+use App\Services\Common\Contracts\ImageServiceInterface;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,7 +13,7 @@ class AdvertisementController extends Controller
 {
 
 
-    public function __construct()
+    public function __construct(private readonly ImageServiceInterface $imageService)
     {
         $this->middleware('auth:admin');
     }
@@ -68,7 +69,8 @@ class AdvertisementController extends Controller
             $file = $request->file('file');
             $file_name = date('Y-m-d-H-i-s') . '.' . $file->getClientOriginalExtension();
 
-            $path = $file->storeAs('images', $file_name, 'files');
+            // $path = $file->storeAs('images', $file_name, 'public');
+            $path = $this->imageService->uploadImage($file, '/ads');
 
             // check if the file img or vid
 
@@ -146,13 +148,13 @@ class AdvertisementController extends Controller
         if ($request->file('file')) {
             $ad = Advertisement::where('id', $id)->get();
 
-            Storage::disk('files')->delete($ad[0]->path);
+            // Storage::disk('public')->delete($ad[0]->path);
 
             $file = $request->file('file');
             $file_name = date('Y-m-d-H-i-s') . '.' . $file->getClientOriginalExtension();
 
 
-            $path = $file->storeAs('images', $file_name, 'files');
+            $path = $this->imageService->uploadImage($file, '/ads');
 
             $data['path'] = $path;
         }
@@ -168,7 +170,7 @@ class AdvertisementController extends Controller
     {
         $ad = Advertisement::where('id', $id)->get();
 
-        Storage::disk('files')->delete($ad[0]->path);
+        // Storage::disk('files')->delete($ad[0]->path);
 
 
         Advertisement::where('id', $id)->delete();
