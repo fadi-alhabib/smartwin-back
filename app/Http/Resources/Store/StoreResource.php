@@ -24,6 +24,7 @@ class StoreResource extends JsonResource
             'owner' => $this->user->full_name,
             'image' => $this->image,
             "points" => $this->points,
+            "is_active" => $this->is_active,
             'products' => StoreProductResource::collection($this->products),
         ];
     }

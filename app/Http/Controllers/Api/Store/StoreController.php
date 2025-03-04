@@ -35,7 +35,7 @@ class StoreController extends Controller
         $perPage = $request->get('per_page', 20);  // default to 20 if not provided
         $page = $request->get('page', 1);  // default to the first page
 
-        $stores = Store::whereHas('products', function ($query) {
+        $stores = Store::where('is_active', true)->whereHas('products', function ($query) {
             $query->whereHas('images');
         })->paginate($perPage, ['*'], 'page', $page);
 

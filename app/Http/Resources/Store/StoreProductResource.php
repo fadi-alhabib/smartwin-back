@@ -22,6 +22,7 @@ class StoreProductResource extends JsonResource
             'images' => ProductImageResource::collection($this->images),
             'average_rating' => $this->averageRating(),
             'user_has_rated' => $this->userHasRated(),
+            'your_rating' => $this->userRating(),
         ];
     }
 }

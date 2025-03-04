@@ -31,7 +31,9 @@ class ProductController extends Controller
         $page = $request->get('page', 1);  // Default page = 1
 
         // Paginate the products
-        $products = Product::whereHas('images')->paginate($perPage, ['*'], 'page', $page);;
+        $products = Product::whereHas('images')->whereHas('store', function ($q) {
+            $q->where('is_active', true);
+        })->paginate($perPage, ['*'], 'page', $page);;
 
         return $this->success(data: ProductResource::collection($products));
     }
@@ -48,13 +50,13 @@ class ProductController extends Controller
         return $this->success(data: new ProductResource($product), message: 'Product added successfuly', statusCode: 201);
     }
 
-    #[Get('/{product}')]
+    #[Get('/{product}', middleware: "auth:sanctum")]
     public function show(Product $product)
     {
         return $this->success(data: new ProductResource($product));
     }
 
-    #[Post('/{product}')]
+    #[Post('/{product}', middleware: "auth:sanctum")]
     public function update(UpdateProductRequest $request, Product $product)
     {
         $dto = UpdateProductDto::fromRequest($request);
@@ -62,7 +64,7 @@ class ProductController extends Controller
         return $this->success();
     }
 
-    #[Delete('/{product}')]
+    #[Delete('/{product}', middleware: "auth:sanctum")]
     public function destroy(Request $request, Product $product)
     {
         $this->productService->delete($product);

@@ -40,12 +40,22 @@ class Product extends Model
 
     public function averageRating()
     {
-        return $this->ratings()->avg('rating');
+        return (int)round($this->ratings()->avg('rating'));
     }
 
     public function userHasRated()
     {
-        $userId = Auth::id();
-        return $this->ratings()->where('user_id', $userId)->exists();
+        $user = auth('sanctum')->user();
+        return $this->ratings()->where('user_id', $user->id)->exists();
+    }
+
+    public function userRating()
+    {
+        $user = auth('sanctum')->user();
+        $rating = $this->ratings()->where('user_id', $user->id)->first();
+        if ($rating) {
+            return $rating['rating'];
+        }
+        return null;
     }
 }

@@ -33,7 +33,7 @@ class AuthController extends Controller
 
             return $this->success(message: 'User registered successfully.', data: $user, statusCode: 201);
         } catch (\Throwable $th) {
-            Log::emergency($th);
+
             return $this->failed($th, 500);
         }
     }

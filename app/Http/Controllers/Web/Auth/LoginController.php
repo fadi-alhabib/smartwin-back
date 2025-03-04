@@ -42,7 +42,7 @@ class LoginController extends Controller
     {
         Auth::guard('admin')->logout();
         Session::flush();
-        return redirect('admin/login');
+        return redirect('/login');
     }
 
     public function showLoginForm()
