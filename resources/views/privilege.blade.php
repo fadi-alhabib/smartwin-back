@@ -9,8 +9,8 @@
     </head>
 
     <!--**********************************
-        Content body start
-    ***********************************-->
+                    Content body start
+                ***********************************-->
     <div class="content-body">
         <!-- row -->
         <div class="container-fluid">
@@ -35,24 +35,16 @@
                                     @foreach ($admins as $admin)
                                         <tr>
                                             @php
-                                                $my_privilege = explode(',', $admin->privilege);
+                                                $adminPrivilegeIds = $admin->privileges->pluck('id')->toArray();
                                             @endphp
 
                                             @foreach ($privileges as $privilege)
-                                                <form action="{{ route('checkPrivilege') }}" method="POST"
-                                                    id="{{ $admin->id }}_{{ $privilege->id }}">
-                                                    @csrf
-                                                    <td>
-                                                        <input type="hidden" name="admin_id" value="{{ $admin->id }}">
-                                                        <input type="hidden" name="privilege_id"
-                                                            value="{{ $privilege->id }}">
-                                                        <input type="hidden" name="status" value="true">
-                                                        <input type="checkbox" class="form-check-input" name="check"
-                                                            data-adminId="{{ $admin->id }}"
-                                                            data-privilegeId="{{ $privilege->id }}"
-                                                            @if (in_array($privilege->id, $my_privilege)) checked @endif>
-                                                    </td>
-                                                </form>
+                                                <td>
+                                                    <input type="checkbox" class="form-check-input toggle-privilege"
+                                                        data-admin-id="{{ $admin->id }}"
+                                                        data-privilege-id="{{ $privilege->id }}"
+                                                        @if (in_array($privilege->id, $adminPrivilegeIds)) checked @endif>
+                                                </td>
                                             @endforeach
 
                                             <td>{{ $admin->full_name }}</td>
@@ -68,7 +60,46 @@
         </div>
     </div>
     <!--**********************************
-        Content body end
-    ***********************************-->
+                    Content body end
+                ***********************************-->
 
+@endsection
+@section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.toggle-privilege').on('change', function() {
+                const $checkbox = $(this); // Store reference to checkbox
+                const adminId = $checkbox.data('admin-id');
+                const privilegeId = $checkbox.data('privilege-id');
+                const isChecked = $checkbox.is(':checked');
+
+                $.ajax({
+                    url: "{{ route('checkPrivilege') }}",
+                    method: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        admin_id: adminId,
+                        privilege_id: privilegeId,
+                        status: isChecked
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Optional: Add success message
+                            // toastr.success('Privilege updated successfully');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+
+                        // Revert checkbox using stored reference
+                        $checkbox.prop('checked', !isChecked);
+
+                        // Show error message
+                        alert('Failed to update privilege. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

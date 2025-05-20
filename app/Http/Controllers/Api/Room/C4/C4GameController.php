@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Pusher\Pusher;
+use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Post;
 use Spatie\RouteAttributes\Attributes\Prefix;
@@ -39,8 +40,44 @@ class C4GameController extends Controller
             'game_id' => $game->id,
             'challenger_id' => $game->challenger_id,
             'current_turn' => $userId,
+            'current_turn_name' => $request->user()->full_name,
         ]);
         return $this->success(['message' => 'Game started.', 'game_id' => $game->id, 'current_turn' => $userId, 'challenger_id' => $game->challenger_id,]);
+    }
+
+    #[Get('/{gameId}/someone-left')]
+    public function someoneLeft(Request $request, Room $room, int $gameId)
+    {
+        $user = $request->user();
+        $c4game = C4Game::find($gameId);
+        if ($user->id === $room->host_id) {
+            $winner = $c4game->challengerId();
+            $winner->points += 10;
+            $winner->save();
+        } else if ($user->id === $c4game->challenger_id) {
+            $winner = User::find($room->host()->id);
+            $winner->points += 10;
+            $winner->save();
+        } else {
+            return $this->success();
+        }
+        $user->points -= 10;
+        $user->save();
+        $c4game->game_over = true;
+        $c4game->end_time = now();
+        $created_at = Carbon::parse($c4game->created_at);
+        $minutes_taken = (int) $created_at->diffInMinutes($c4game->end_time);
+        $room->available_time -= $minutes_taken;
+        if ($room->available_time <= 0) {
+            $room->available_time = 0;
+            $room->consumed_at = now();
+            $this->pusher->trigger('room.' . $room->id, 'no.time', []);
+        }
+        $room->save();
+        $c4game->save();
+
+        $this->pusher->trigger('room.' . $room->id, 'c4.left', []);
+        return $this->success();
     }
 
     #[Post('/{gameId}/make-move')]
@@ -205,6 +242,7 @@ class C4GameController extends Controller
             'game_id' => $game->id,
             'board' => $game->board,
             'current_turn' => $game->current_turn,
+            'current_turn_name' => User::find($game->current_turn)->full_name,
             'message' => $message,
         ];
 

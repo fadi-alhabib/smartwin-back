@@ -7,6 +7,7 @@ use App\Models\AdminPrivilege;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\Privilege;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class PrivilegeController extends Controller
@@ -32,25 +33,32 @@ class PrivilegeController extends Controller
     public function checkPrivilege(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'admin_id'     => 'required',
-            'privilege_id' => 'required',
-            'status'       => 'required'
+            'admin_id' => 'required|exists:admins,id',
+            'privilege_id' => 'required|exists:privileges,id',
+            'status' => 'required|boolean' // Ensure boolean validation
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
         }
 
-        if ($request->status === 'true') {
-            AdminPrivilege::create([
-                'admin_id'     => $request->admin_id,
-                'privilege_id' => $request->privilege_id,
-            ]);
-        } else {
-            AdminPrivilege::where('admin_id', $request->admin_id)
-                ->where('privilege_id', $request->privilege_id)
-                ->delete();
-        }
+        // Use transaction for atomic operations
+        DB::transaction(function () use ($request) {
+            if ($request->status) {
+                AdminPrivilege::firstOrCreate([
+                    'admin_id' => $request->admin_id,
+                    'privilege_id' => $request->privilege_id
+                ]);
+            } else {
+                AdminPrivilege::where([
+                    'admin_id' => $request->admin_id,
+                    'privilege_id' => $request->privilege_id
+                ])->delete();
+            }
+        });
 
         return response()->json(['success' => true]);
     }

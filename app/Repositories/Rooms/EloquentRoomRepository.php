@@ -15,6 +15,6 @@ class EloquentRoomRepository extends BaseRepository implements RoomRepositoryInt
 
     public function orderByOnline()
     {
-        return $this->model->orderByDesc('online')->orderBy('id')->get();
+        return $this->model->where("online", true)->get();
     }
 }

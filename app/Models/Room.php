@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'image', 'online', 'owner_id', 'available_time', 'host_id'];
+    protected $fillable = ['name', 'image', 'online', 'available_time', 'host_id'];
     protected $casts = [
         'online' => "bool",
     ];
     // Relationships
-    public function owner()
+    public function host()
     {
-        return $this->belongsTo(User::class, 'owner_id');
+        return $this->belongsTo(User::class, 'host_id');
     }
     public function messages()
     {

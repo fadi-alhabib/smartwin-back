@@ -32,12 +32,21 @@ class StoreController extends Controller
     #[Get('/')]
     public function index(Request $request)
     {
-        $perPage = $request->get('per_page', 20);  // default to 20 if not provided
-        $page = $request->get('page', 1);  // default to the first page
+        $perPage = $request->get('per_page', 20);
+        $page = $request->get('page', 1);
+        $country = $request->get('country');
 
-        $stores = Store::where('is_active', true)->whereHas('products', function ($query) {
-            $query->whereHas('images');
-        })->paginate($perPage, ['*'], 'page', $page);
+        $stores = Store::query()
+            ->where('is_active', true)
+            ->whereHas('products', function ($query) {
+                $query->whereHas('images');
+            });
+
+        if ($country) {
+            $stores->where('country', $country);
+        }
+
+        $stores = $stores->paginate($perPage, ['*'], 'page', $page);
 
         return $this->success(data: StoreResource::collection($stores));
     }

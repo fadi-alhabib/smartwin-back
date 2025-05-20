@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Question;
 use App\Models\Answer;
+use App\Services\Common\Contracts\ImageServiceInterface;
 use Carbon\Carbon;
 
 class QuestionController extends Controller
 {
-    public function __construct()
+    public function __construct(private readonly ImageServiceInterface $imagesService)
     {
         $this->middleware('auth:admin');
     }
@@ -48,19 +49,21 @@ class QuestionController extends Controller
         // }
 
         // Handle file upload if an image is provided
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            // Move the file to the public/images folder
-            $file->move(public_path('images'), $filename);
-            $imagePath = 'images/' . $filename;
+        if ($request->file('image')) {
+            $imagePath = $this->imagesService->uploadImage($request->file('image'), '/questions');
         }
+        // if ($request->hasFile('image')) {
+        //     $file = $request->file('image');
+        //     $filename = time() . '.' . $file->getClientOriginalExtension();
+        //     // Move the file to the public/images folder
+        //     $file->move(public_path('images'), $filename);
+        //     $imagePath = 'images/' . $filename;
+        // }
 
         $question_id = Question::insertGetId([
             'title'      => $request->title,
             'image'      => $imagePath, // Save image path or null
-            'user_id'    => Auth::id(),
+            'admin_id'    => Auth::id(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);

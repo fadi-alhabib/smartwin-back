@@ -22,11 +22,18 @@ class StoreController extends Controller
      */
     public function index(Request $request)
     {
+        $query = Store::query();
 
-        $stores = Store::all();
-        if ($request->search) {
-            $stores = Store::where("name", "LIKE", '%' . $request->search . '%')->get();
+        if ($request->has('search') && $request->search !== null) {
+            $query->where("name", "LIKE", '%' . $request->search . '%');
         }
+
+        if ($request->has('country') && $request->country !== null) {
+            $query->where("country", $request->country);
+        }
+
+        $stores = $query->get();
+
         return view("store.index", ["stores" => $stores]);
     }
 

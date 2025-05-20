@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Laravel",
-        "_postman_id": "7e2ea3bb-ea2c-4e1f-9d6d-95702097f285",
+        "_postman_id": "719daa48-5552-4a8b-bb25-c342fd113cf3",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -89,7 +89,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"full_name\":\"ldzdikfofljxyrcyfi\",\"phone\":66413593.02679176}"
+                            "raw": "{\"full_name\":\"hvswyunuqfqndenzmwnhpi\",\"phone\":3.3}"
                         },
                         "description": "",
                         "auth": {
@@ -120,7 +120,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"phone\":\"ut\"}"
+                            "raw": "{\"phone\":\"culpa\"}"
                         },
                         "description": "",
                         "auth": {
@@ -151,7 +151,131 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"phone\":\"sed\",\"otp\":38.9}"
+                            "raw": "{\"phone\":\"dolorum\",\"otp\":2.366437}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/auth\/google-redirect",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/google-redirect",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/google-redirect"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/auth\/google-callback",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/google-callback",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/google-callback"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/auth\/profile-image",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/profile-image",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/profile-image"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "image",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/transfers",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/transfers",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/transfers"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"country\":\"ab\",\"phone\":\"porro\",\"points\":822}"
                         },
                         "description": "",
                         "auth": {
@@ -214,7 +338,7 @@
                                 {
                                     "id": "gameId",
                                     "key": "gameId",
-                                    "value": "sit",
+                                    "value": "est",
                                     "description": ""
                                 }
                             ]
@@ -232,7 +356,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"column\":6}"
+                            "raw": "{\"column\":3}"
                         },
                         "description": "",
                         "auth": {
@@ -271,7 +395,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"message\":\"xvcqsqxmfdxkgklirhtmjb\"}"
+                            "raw": "{\"message\":\"pzavrdlbqnmbjv\"}"
                         },
                         "description": "",
                         "auth": {
@@ -281,13 +405,61 @@
                     "response": []
                 },
                 {
-                    "name": "GET api\/messages\/rooms\/{room_id}",
+                    "name": "GET api\/messages\/rooms\/active-users",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/messages\/rooms\/:room_id",
+                            "path": "api\/messages\/rooms\/active-users",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/messages\/rooms\/:room_id",
+                            "raw": "{{baseUrl}}\/api\/messages\/rooms\/active-users"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET api\/messages\/rooms\/rooms\/{room_id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/messages\/rooms\/rooms\/:room_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/messages\/rooms\/rooms\/:room_id",
                             "variable": [
                                 {
                                     "id": "room_id",
@@ -471,6 +643,116 @@
                     "response": []
                 },
                 {
+                    "name": "NEW: Spectator endpoint to vote for an answer on a specific question.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/room\/:room_id\/quiz\/:quiz_id\/question\/:question_id\/vote",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/room\/:room_id\/quiz\/:quiz_id\/question\/:question_id\/vote",
+                            "variable": [
+                                {
+                                    "id": "room_id",
+                                    "key": "room_id",
+                                    "value": "1",
+                                    "description": "The ID of the room."
+                                },
+                                {
+                                    "id": "quiz_id",
+                                    "key": "quiz_id",
+                                    "value": "1",
+                                    "description": "The ID of the quiz."
+                                },
+                                {
+                                    "id": "question_id",
+                                    "key": "question_id",
+                                    "value": "2",
+                                    "description": "The ID of the question."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Each spectator (non-host) can vote once per question per quiz game.\nAfter saving the vote, the updated vote counts for that question are broadcasted realtime.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/room\/{room_id}\/quiz\/{quiz_id}\/votes",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/room\/:room_id\/quiz\/:quiz_id\/votes",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/room\/:room_id\/quiz\/:quiz_id\/votes",
+                            "variable": [
+                                {
+                                    "id": "room_id",
+                                    "key": "room_id",
+                                    "value": "1",
+                                    "description": "The ID of the room."
+                                },
+                                {
+                                    "id": "quiz_id",
+                                    "key": "quiz_id",
+                                    "value": "1",
+                                    "description": "The ID of the quiz."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
                     "name": "GET api\/rooms",
                     "request": {
                         "url": {
@@ -526,6 +808,54 @@
                             "path": "api\/rooms\/me",
                             "query": [],
                             "raw": "{{baseUrl}}\/api\/rooms\/me"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET api\/rooms\/offline",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/rooms\/offline",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/rooms\/offline"
                         },
                         "method": "GET",
                         "header": [
@@ -647,7 +977,7 @@
                             "formdata": [
                                 {
                                     "key": "name",
-                                    "value": "nihil",
+                                    "value": "aperiam",
                                     "type": "text",
                                     "description": ""
                                 },
@@ -658,6 +988,42 @@
                                 }
                             ]
                         },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/rooms\/{room_id}\/time-purchase",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/rooms\/:room_id\/time-purchase",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/rooms\/:room_id\/time-purchase",
+                            "variable": [
+                                {
+                                    "id": "room_id",
+                                    "key": "room_id",
+                                    "value": "1",
+                                    "description": "The ID of the room."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
                         "description": "",
                         "auth": {
                             "type": "noauth"
@@ -707,8 +1073,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":151,\"name\":\"sapiente\",\"description\":\"Reiciendis qui ipsa voluptas sit et sint neque incidunt.\",\"price\":\"932.43\",\"store\":{\"id\":161,\"name\":\"Cummings, Kozey and Wehner\",\"type\":\"voluptates\",\"country\":\"Micronesia\",\"address\":\"57378 Cummings Manor Apt. 065\\nNorth General, WY 88045\",\"phone\":\"1-520-456-5622\",\"owner\":\"Darrin Wolff\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":151,\"name\":\"sapiente\",\"description\":\"Reiciendis qui ipsa voluptas sit et sint neque incidunt.\",\"price\":\"932.43\",\"store_id\":161,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":1,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":152,\"name\":\"facere\",\"description\":\"Facere ducimus ut modi quia voluptatum et.\",\"price\":\"623.08\",\"store\":{\"id\":162,\"name\":\"Berge Inc\",\"type\":\"ratione\",\"country\":\"Monaco\",\"address\":\"4075 Conn Mall Suite 364\\nMacejkovicberg, WI 97637-4180\",\"phone\":\"(507) 212-5306\",\"owner\":\"Virgil Considine\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":152,\"name\":\"facere\",\"description\":\"Facere ducimus ut modi quia voluptatum et.\",\"price\":\"623.08\",\"store_id\":162,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":2,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":153,\"name\":\"tenetur\",\"description\":\"Velit distinctio cupiditate necessitatibus repellendus.\",\"price\":\"558.75\",\"store\":{\"id\":163,\"name\":\"D'Amore, Waelchi and Hickle\",\"type\":\"inventore\",\"country\":\"Palau\",\"address\":\"219 Cordelia Tunnel Apt. 838\\nKerlukeborough, VA 62997-4399\",\"phone\":\"+1-972-624-8206\",\"owner\":\"Nia Greenholt\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":153,\"name\":\"tenetur\",\"description\":\"Velit distinctio cupiditate necessitatibus repellendus.\",\"price\":\"558.75\",\"store_id\":163,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":3,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":154,\"name\":\"molestias\",\"description\":\"Ab aliquam voluptas sed et laudantium est.\",\"price\":\"366.17\",\"store\":{\"id\":164,\"name\":\"Luettgen-Weber\",\"type\":\"maxime\",\"country\":\"Guatemala\",\"address\":\"69430 Antonette Walk Suite 832\\nNorth Emiliobury, AZ 12749\",\"phone\":\"+1.580.307.8147\",\"owner\":\"Josefina Blick\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":154,\"name\":\"molestias\",\"description\":\"Ab aliquam voluptas sed et laudantium est.\",\"price\":\"366.17\",\"store_id\":164,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":4,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":155,\"name\":\"sequi\",\"description\":\"Maiores voluptates ut fuga asperiores perferendis animi corrupti.\",\"price\":\"424.49\",\"store\":{\"id\":165,\"name\":\"Zboncak Group\",\"type\":\"odit\",\"country\":\"Puerto Rico\",\"address\":\"57512 Roslyn Pike Suite 041\\nNorth Jamieview, AL 69729\",\"phone\":\"385-296-6826\",\"owner\":\"Miss Brandyn Greenholt V\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":155,\"name\":\"sequi\",\"description\":\"Maiores voluptates ut fuga asperiores perferendis animi corrupti.\",\"price\":\"424.49\",\"store_id\":165,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":5,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":156,\"name\":\"eum\",\"description\":\"Voluptatem ex possimus minima praesentium officiis aut.\",\"price\":\"335.36\",\"store\":{\"id\":166,\"name\":\"Armstrong, Goldner and O'Hara\",\"type\":\"qui\",\"country\":\"Niue\",\"address\":\"11263 Jessika Land\\nGaylordport, AZ 17428-8454\",\"phone\":\"+1-480-700-9300\",\"owner\":\"Ara Kuhlman\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":156,\"name\":\"eum\",\"description\":\"Voluptatem ex possimus minima praesentium officiis aut.\",\"price\":\"335.36\",\"store_id\":166,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":6,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":157,\"name\":\"ut\",\"description\":\"Est eaque voluptatum autem architecto eum voluptatem.\",\"price\":\"756.13\",\"store\":{\"id\":167,\"name\":\"Heaney, Gutkowski and Hodkiewicz\",\"type\":\"et\",\"country\":\"Burkina Faso\",\"address\":\"849 Omari Forks Apt. 301\\nMarquardtport, MI 18230-7134\",\"phone\":\"+1 (828) 585-8466\",\"owner\":\"Dr. Baylee Kassulke V\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":157,\"name\":\"ut\",\"description\":\"Est eaque voluptatum autem architecto eum voluptatem.\",\"price\":\"756.13\",\"store_id\":167,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":7,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":158,\"name\":\"praesentium\",\"description\":\"Natus cum tempora laudantium quo minus voluptatem omnis.\",\"price\":\"729.94\",\"store\":{\"id\":168,\"name\":\"Marvin, Armstrong and Mueller\",\"type\":\"et\",\"country\":\"Nauru\",\"address\":\"29306 Cormier Trail Apt. 375\\nDonnellystad, TX 36623-1899\",\"phone\":\"1-351-949-5733\",\"owner\":\"Prof. Priscilla Rodriguez V\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":158,\"name\":\"praesentium\",\"description\":\"Natus cum tempora laudantium quo minus voluptatem omnis.\",\"price\":\"729.94\",\"store_id\":168,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":8,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":159,\"name\":\"aliquid\",\"description\":\"Minima rerum aspernatur dolore soluta quia id nesciunt.\",\"price\":\"402.67\",\"store\":{\"id\":169,\"name\":\"Ledner-Mills\",\"type\":\"tempore\",\"country\":\"Guadeloupe\",\"address\":\"7911 Zetta Estate\\nEast Dusty, WY 06983-4946\",\"phone\":\"570-794-4951\",\"owner\":\"Norwood Kris\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":159,\"name\":\"aliquid\",\"description\":\"Minima rerum aspernatur dolore soluta quia id nesciunt.\",\"price\":\"402.67\",\"store_id\":169,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":9,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":160,\"name\":\"qui\",\"description\":\"Quae quasi nisi asperiores eum et esse.\",\"price\":\"211.35\",\"store\":{\"id\":170,\"name\":\"Jerde, Kunde and Grady\",\"type\":\"culpa\",\"country\":\"Niue\",\"address\":\"793 Heath Plain\\nHoraceberg, GA 16377\",\"phone\":\"+1.858.472.8637\",\"owner\":\"Prof. Leone Stanton\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":160,\"name\":\"qui\",\"description\":\"Quae quasi nisi asperiores eum et esse.\",\"price\":\"211.35\",\"store_id\":170,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":10,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":161,\"name\":\"omnis\",\"description\":\"Ipsam est rerum quidem quisquam odit.\",\"price\":\"672.42\",\"store\":{\"id\":171,\"name\":\"Kreiger, Treutel and Kulas\",\"type\":\"placeat\",\"country\":\"Sri Lanka\",\"address\":\"84368 Abagail Mission Suite 931\\nTeresafurt, OH 15261\",\"phone\":\"920-848-0639\",\"owner\":\"Karson Veum\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":161,\"name\":\"omnis\",\"description\":\"Ipsam est rerum quidem quisquam odit.\",\"price\":\"672.42\",\"store_id\":171,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":11,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":162,\"name\":\"ut\",\"description\":\"Omnis laudantium aspernatur aliquam soluta nisi error earum.\",\"price\":\"604.14\",\"store\":{\"id\":172,\"name\":\"Barrows and Sons\",\"type\":\"modi\",\"country\":\"Christmas Island\",\"address\":\"223 Huels Greens\\nPollichborough, VA 15818\",\"phone\":\"1-747-530-7728\",\"owner\":\"Fleta Fisher\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":162,\"name\":\"ut\",\"description\":\"Omnis laudantium aspernatur aliquam soluta nisi error earum.\",\"price\":\"604.14\",\"store_id\":172,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":12,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":163,\"name\":\"ipsum\",\"description\":\"Similique maxime voluptatem maxime quo recusandae sit rem.\",\"price\":\"999.09\",\"store\":{\"id\":173,\"name\":\"Kuhic, Stoltenberg and Blick\",\"type\":\"dignissimos\",\"country\":\"Bulgaria\",\"address\":\"266 Arlie Ford Apt. 155\\nSouth Brookefurt, CT 55101\",\"phone\":\"1-872-577-0446\",\"owner\":\"Malvina Mertz\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":163,\"name\":\"ipsum\",\"description\":\"Similique maxime voluptatem maxime quo recusandae sit rem.\",\"price\":\"999.09\",\"store_id\":173,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":13,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":164,\"name\":\"blanditiis\",\"description\":\"Facilis et ut non cupiditate dolore dolorum distinctio.\",\"price\":\"412.25\",\"store\":{\"id\":174,\"name\":\"McGlynn Inc\",\"type\":\"non\",\"country\":\"Northern Mariana Islands\",\"address\":\"9616 Schmeler River\\nWest Elisamouth, LA 04771-2443\",\"phone\":\"(929) 754-1920\",\"owner\":\"Ivah Cummings\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":164,\"name\":\"blanditiis\",\"description\":\"Facilis et ut non cupiditate dolore dolorum distinctio.\",\"price\":\"412.25\",\"store_id\":174,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":14,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":165,\"name\":\"non\",\"description\":\"Veniam sed quia nam vel.\",\"price\":\"779.32\",\"store\":{\"id\":175,\"name\":\"Predovic-Runolfsdottir\",\"type\":\"quaerat\",\"country\":\"Indonesia\",\"address\":\"17432 Kevin Bridge Apt. 484\\nWest Alexa, FL 93114\",\"phone\":\"+1 (979) 854-8181\",\"owner\":\"Dr. Bernadine VonRueden\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":165,\"name\":\"non\",\"description\":\"Veniam sed quia nam vel.\",\"price\":\"779.32\",\"store_id\":175,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":15,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":166,\"name\":\"quis\",\"description\":\"Aut qui incidunt quia.\",\"price\":\"542.19\",\"store\":{\"id\":176,\"name\":\"Jacobson-Cruickshank\",\"type\":\"earum\",\"country\":\"Turkey\",\"address\":\"1780 Juston Rapid\\nPort Cordiaport, MO 51429\",\"phone\":\"+1-479-201-3461\",\"owner\":\"Madisyn Stark\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":166,\"name\":\"quis\",\"description\":\"Aut qui incidunt quia.\",\"price\":\"542.19\",\"store_id\":176,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":16,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":167,\"name\":\"eum\",\"description\":\"Aut omnis laboriosam voluptates doloremque temporibus.\",\"price\":\"870.80\",\"store\":{\"id\":177,\"name\":\"Gaylord Group\",\"type\":\"magni\",\"country\":\"Bouvet Island (Bouvetoya)\",\"address\":\"5833 Delaney Forest\\nPort Alec, CO 77411-0644\",\"phone\":\"952.800.5975\",\"owner\":\"Vicente Reinger Sr.\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":167,\"name\":\"eum\",\"description\":\"Aut omnis laboriosam voluptates doloremque temporibus.\",\"price\":\"870.80\",\"store_id\":177,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":17,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":168,\"name\":\"iste\",\"description\":\"Atque deleniti consequatur molestiae reiciendis alias aut.\",\"price\":\"641.97\",\"store\":{\"id\":178,\"name\":\"Schimmel-Lynch\",\"type\":\"et\",\"country\":\"Vietnam\",\"address\":\"281 Autumn Ways\\nNorth Herminabury, IN 61205\",\"phone\":\"+1-440-568-9218\",\"owner\":\"Nickolas McDermott\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":168,\"name\":\"iste\",\"description\":\"Atque deleniti consequatur molestiae reiciendis alias aut.\",\"price\":\"641.97\",\"store_id\":178,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":18,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":169,\"name\":\"odio\",\"description\":\"Voluptas reiciendis labore tempora molestiae distinctio ut provident.\",\"price\":\"294.27\",\"store\":{\"id\":179,\"name\":\"Stokes-Zieme\",\"type\":\"in\",\"country\":\"Tonga\",\"address\":\"3386 Murray Points\\nCarissaborough, WA 65336\",\"phone\":\"+1.231.450.0175\",\"owner\":\"Alyson Keebler\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":169,\"name\":\"odio\",\"description\":\"Voluptas reiciendis labore tempora molestiae distinctio ut provident.\",\"price\":\"294.27\",\"store_id\":179,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":19,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]},{\"id\":170,\"name\":\"aut\",\"description\":\"Enim occaecati molestiae iusto occaecati.\",\"price\":\"355.93\",\"store\":{\"id\":180,\"name\":\"Krajcik and Sons\",\"type\":\"et\",\"country\":\"Tuvalu\",\"address\":\"586 Osinski Point Apt. 833\\nMcGlynnhaven, OH 43935\",\"phone\":\"859-962-1354\",\"owner\":\"Jane Davis\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":170,\"name\":\"aut\",\"description\":\"Enim occaecati molestiae iusto occaecati.\",\"price\":\"355.93\",\"store_id\":180,\"created_at\":\"2025-02-05T07:08:27.000000Z\",\"updated_at\":\"2025-02-05T07:08:27.000000Z\"}]},\"images\":[{\"id\":20,\"image\":\"https:\\\/\\\/encrypted-tbn0.gstatic.com\\\/images?q=tbn:ANd9GcRlndpwDalSNF8TzBG6T7kGv73l0IOReNJpKw&s\"}]}]}",
+                            "code": 500,
+                            "body": "{\n    \"message\": \"Server Error\"\n}",
                             "name": ""
                         }
                     ]
@@ -738,19 +1104,19 @@
                             "formdata": [
                                 {
                                     "key": "name",
-                                    "value": "kpq",
+                                    "value": "shjvwzaoze",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "description",
-                                    "value": "Error dolor non sed id quia earum itaque.",
+                                    "value": "Accusantium iusto labore a ea.",
                                     "type": "text",
                                     "description": ""
                                 },
                                 {
                                     "key": "price",
-                                    "value": "10",
+                                    "value": "82",
                                     "type": "text",
                                     "description": "Must be at least 0."
                                 },
@@ -780,7 +1146,7 @@
                                 {
                                     "id": "product_id",
                                     "key": "product_id",
-                                    "value": "1",
+                                    "value": "151",
                                     "description": "The ID of the product."
                                 }
                             ]
@@ -818,14 +1184,14 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"name\":\"quo\",\"description\":\"Dolores adipisci exercitationem ducimus dolor inventore dolore.\",\"price\":\"433.41\",\"store\":{\"id\":11,\"name\":\"Ebert, Senger and Cummerata\",\"type\":\"eius\",\"country\":\"Bangladesh\",\"address\":\"451 Celestine Land\\nGreenville, CA 24589-1530\",\"phone\":\"+1 (970) 923-0262\",\"owner\":\"Sebastian Stroman\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":1,\"name\":\"quo\",\"description\":\"Dolores adipisci exercitationem ducimus dolor inventore dolore.\",\"price\":\"433.41\",\"store_id\":11,\"created_at\":\"2025-02-05T07:08:25.000000Z\",\"updated_at\":\"2025-02-05T07:08:25.000000Z\"}]},\"images\":[]}}",
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
                             "name": ""
                         }
                     ]
                 },
                 {
-                    "name": "PATCH api\/products\/{product_id}",
+                    "name": "POST api\/products\/{product_id}",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -836,12 +1202,12 @@
                                 {
                                     "id": "product_id",
                                     "key": "product_id",
-                                    "value": "1",
+                                    "value": "151",
                                     "description": "The ID of the product."
                                 }
                             ]
                         },
-                        "method": "PATCH",
+                        "method": "POST",
                         "header": [
                             {
                                 "key": "Content-Type",
@@ -854,7 +1220,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"uikmuxpoeedyohlcrjtucva\",\"description\":\"Voluptatum sunt quam dignissimos in.\",\"price\":87}"
+                            "raw": "{\"name\":\"kmyzzhvxczrcrjoq\",\"description\":\"Quaerat nam reiciendis beatae sed dolorem perferendis.\",\"price\":67}"
                         },
                         "description": "",
                         "auth": {
@@ -875,7 +1241,7 @@
                                 {
                                     "id": "product_id",
                                     "key": "product_id",
-                                    "value": "1",
+                                    "value": "151",
                                     "description": "The ID of the product."
                                 }
                             ]
@@ -911,7 +1277,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "ab",
+                                    "value": "est",
                                     "description": "The ID of the product image."
                                 }
                             ]
@@ -957,7 +1323,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"images\":[7]}"
+                            "raw": "{\"images\":[17]}"
                         },
                         "description": "",
                         "auth": {
@@ -991,7 +1357,7 @@
                             "formdata": [
                                 {
                                     "key": "product_id",
-                                    "value": "culpa",
+                                    "value": "dolor",
                                     "type": "text",
                                     "description": "The <code>id<\/code> of an existing record in the products table."
                                 },
@@ -1034,7 +1400,7 @@
                             "formdata": [
                                 {
                                     "key": "product_id",
-                                    "value": "sequi",
+                                    "value": "quibusdam",
                                     "type": "text",
                                     "description": "The <code>id<\/code> of an existing record in the products table."
                                 },
@@ -1051,6 +1417,286 @@
                         }
                     },
                     "response": []
+                },
+                {
+                    "name": "Store a newly created rating in storage.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/product-ratings",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/product-ratings"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"product_id\":\"qui\",\"rating\":5,\"review\":\"quos\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Display the specified product's ratings.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/product-ratings\/:product_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/product-ratings\/:product_id",
+                            "variable": [
+                                {
+                                    "id": "product_id",
+                                    "key": "product_id",
+                                    "value": "17",
+                                    "description": "The ID of the product."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "[]",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update the specified rating in storage.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/product-ratings\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/product-ratings\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "14",
+                                    "description": "The ID of the product rating."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"rating\":3,\"review\":\"aperiam\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Remove the specified rating from storage.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/product-ratings\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/product-ratings\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "17",
+                                    "description": "The ID of the product rating."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/purchase",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/purchase",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/purchase"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"product_id\":\"id\",\"quantity\":65}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH api\/purchase\/{id}\/status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/purchase\/:id\/status",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/purchase\/:id\/status",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "et",
+                                    "description": "The ID of the purchase."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"status\":\"completed\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/purchase\/store",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/purchase\/store",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/purchase\/store"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
                 },
                 {
                     "name": "GET api\/stores",
@@ -1094,8 +1740,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"name\":\"Koss Ltd\",\"type\":\"consequatur\",\"country\":\"Anguilla\",\"address\":\"6767 Upton Orchard Suite 737\\nPort Orpha, ND 18441-2630\",\"phone\":\"802.573.2698\",\"owner\":\"Prof. Norwood King IV\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[]},{\"id\":2,\"name\":\"Kerluke, Donnelly and Wuckert\",\"type\":\"laudantium\",\"country\":\"Ukraine\",\"address\":\"7018 Dereck Cape Apt. 390\\nHermistonborough, OH 60156-2183\",\"phone\":\"+1.815.746.1152\",\"owner\":\"Flo O'Kon DDS\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[]},{\"id\":3,\"name\":\"Pagac Inc\",\"type\":\"ratione\",\"country\":\"New Caledonia\",\"address\":\"7824 Adam Squares Suite 894\\nSouth Sylvesterstad, UT 60779\",\"phone\":\"+1 (231) 975-1131\",\"owner\":\"Michael Fritsch\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[]},{\"id\":4,\"name\":\"Ritchie, Bogan and Heaney\",\"type\":\"et\",\"country\":\"France\",\"address\":\"41108 Rolando Centers Suite 548\\nEast Mossie, SC 82916-9547\",\"phone\":\"(337) 575-0978\",\"owner\":\"Mr. Jerel Erdman III\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[]},{\"id\":5,\"name\":\"Emmerich-Stoltenberg\",\"type\":\"ratione\",\"country\":\"Denmark\",\"address\":\"6826 Jenkins Street Apt. 356\\nElmerbury, WI 60265\",\"phone\":\"737-656-5744\",\"owner\":\"Jesus Fadel\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[]},{\"id\":6,\"name\":\"Jacobi-Grimes\",\"type\":\"repudiandae\",\"country\":\"Denmark\",\"address\":\"139 Meta Corners Apt. 230\\nHanestad, NC 15193-2345\",\"phone\":\"+1.218.228.4024\",\"owner\":\"Tom Considine V\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[]},{\"id\":7,\"name\":\"Bergnaum, Beier and Reynolds\",\"type\":\"et\",\"country\":\"Seychelles\",\"address\":\"1946 Macejkovic Streets\\nEast Hadley, OR 09242\",\"phone\":\"820.217.1566\",\"owner\":\"Ms. Caleigh Aufderhar\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[]},{\"id\":8,\"name\":\"Grady-Doyle\",\"type\":\"assumenda\",\"country\":\"Denmark\",\"address\":\"514 Johnnie Dam Apt. 856\\nPort Taylor, PA 93080-4362\",\"phone\":\"872-854-4667\",\"owner\":\"Shemar Boyer\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[]},{\"id\":9,\"name\":\"Kohler and Sons\",\"type\":\"fugiat\",\"country\":\"Poland\",\"address\":\"805 Frami Courts Apt. 024\\nGoldnerside, DC 56071\",\"phone\":\"+1.769.336.0812\",\"owner\":\"Aaron Hills\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[]},{\"id\":10,\"name\":\"Carter, Kutch and Frami\",\"type\":\"voluptas\",\"country\":\"Turkey\",\"address\":\"38434 Pfeffer Groves Apt. 541\\nBertabury, TN 66648\",\"phone\":\"+1-612-824-1983\",\"owner\":\"Delores Ullrich\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[]},{\"id\":11,\"name\":\"Ebert, Senger and Cummerata\",\"type\":\"eius\",\"country\":\"Bangladesh\",\"address\":\"451 Celestine Land\\nGreenville, CA 24589-1530\",\"phone\":\"+1 (970) 923-0262\",\"owner\":\"Sebastian Stroman\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":1,\"name\":\"quo\",\"description\":\"Dolores adipisci exercitationem ducimus dolor inventore dolore.\",\"price\":\"433.41\",\"store_id\":11,\"created_at\":\"2025-02-05T07:08:25.000000Z\",\"updated_at\":\"2025-02-05T07:08:25.000000Z\"}]},{\"id\":12,\"name\":\"Grant, Gleichner and Feest\",\"type\":\"officiis\",\"country\":\"Serbia\",\"address\":\"1312 Marian Squares\\nLake Tressashire, AR 87486-0280\",\"phone\":\"620.738.1648\",\"owner\":\"Dr. Damon Cruickshank DDS\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":2,\"name\":\"perspiciatis\",\"description\":\"Cumque quidem enim provident nulla minima magnam sed.\",\"price\":\"837.30\",\"store_id\":12,\"created_at\":\"2025-02-05T07:08:25.000000Z\",\"updated_at\":\"2025-02-05T07:08:25.000000Z\"}]},{\"id\":13,\"name\":\"Hessel, Kreiger and Robel\",\"type\":\"repellat\",\"country\":\"Bouvet Island (Bouvetoya)\",\"address\":\"36385 Rubye Row Suite 389\\nFilomenahaven, AZ 28629-8012\",\"phone\":\"+14139471361\",\"owner\":\"Lura Hill\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":3,\"name\":\"molestiae\",\"description\":\"Cum et esse sunt odio est voluptas.\",\"price\":\"415.20\",\"store_id\":13,\"created_at\":\"2025-02-05T07:08:25.000000Z\",\"updated_at\":\"2025-02-05T07:08:25.000000Z\"}]},{\"id\":14,\"name\":\"Stroman-McLaughlin\",\"type\":\"vero\",\"country\":\"Heard Island and McDonald Islands\",\"address\":\"703 Stroman Lodge Apt. 362\\nGreenfelderbury, AR 76015\",\"phone\":\"936.653.1650\",\"owner\":\"Nelda Goodwin\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":4,\"name\":\"voluptatibus\",\"description\":\"Qui enim nisi beatae velit et et debitis.\",\"price\":\"424.06\",\"store_id\":14,\"created_at\":\"2025-02-05T07:08:25.000000Z\",\"updated_at\":\"2025-02-05T07:08:25.000000Z\"}]},{\"id\":15,\"name\":\"O'Conner-Gusikowski\",\"type\":\"dolores\",\"country\":\"Algeria\",\"address\":\"2592 DuBuque Branch Apt. 613\\nTyrelville, NC 95487\",\"phone\":\"+1.651.337.2711\",\"owner\":\"Kaden Borer\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":5,\"name\":\"asperiores\",\"description\":\"Consequatur ducimus dolor saepe enim nemo.\",\"price\":\"522.81\",\"store_id\":15,\"created_at\":\"2025-02-05T07:08:25.000000Z\",\"updated_at\":\"2025-02-05T07:08:25.000000Z\"}]},{\"id\":16,\"name\":\"Nitzsche Group\",\"type\":\"est\",\"country\":\"United States of America\",\"address\":\"9535 Bartoletti Unions Suite 811\\nEast Lulu, KY 24861\",\"phone\":\"910.696.3079\",\"owner\":\"Daphney Stracke\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":6,\"name\":\"temporibus\",\"description\":\"Non voluptatum itaque est eum.\",\"price\":\"351.94\",\"store_id\":16,\"created_at\":\"2025-02-05T07:08:25.000000Z\",\"updated_at\":\"2025-02-05T07:08:25.000000Z\"}]},{\"id\":17,\"name\":\"O'Hara PLC\",\"type\":\"corporis\",\"country\":\"United States of America\",\"address\":\"695 Audra Branch Suite 593\\nLake Genevieve, AR 06452\",\"phone\":\"469.839.4401\",\"owner\":\"Johann Waelchi\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":7,\"name\":\"voluptas\",\"description\":\"Ut quos soluta ut perferendis.\",\"price\":\"269.26\",\"store_id\":17,\"created_at\":\"2025-02-05T07:08:25.000000Z\",\"updated_at\":\"2025-02-05T07:08:25.000000Z\"}]},{\"id\":18,\"name\":\"Howe, O'Kon and Douglas\",\"type\":\"rerum\",\"country\":\"Finland\",\"address\":\"492 Lakin Prairie Suite 620\\nLowebury, MS 16726-5025\",\"phone\":\"+1.831.499.6038\",\"owner\":\"Bethany Towne\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":8,\"name\":\"illo\",\"description\":\"Dolorem mollitia doloribus quo dicta.\",\"price\":\"810.91\",\"store_id\":18,\"created_at\":\"2025-02-05T07:08:25.000000Z\",\"updated_at\":\"2025-02-05T07:08:25.000000Z\"}]},{\"id\":19,\"name\":\"Murazik, Carter and Feest\",\"type\":\"distinctio\",\"country\":\"Mayotte\",\"address\":\"3932 Novella Prairie\\nPort Otilia, ND 87722-5018\",\"phone\":\"240-586-7691\",\"owner\":\"Dalton Miller\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":9,\"name\":\"voluptate\",\"description\":\"Et aut ex atque inventore.\",\"price\":\"64.20\",\"store_id\":19,\"created_at\":\"2025-02-05T07:08:25.000000Z\",\"updated_at\":\"2025-02-05T07:08:25.000000Z\"}]},{\"id\":20,\"name\":\"O'Reilly, O'Hara and Yost\",\"type\":\"id\",\"country\":\"Belize\",\"address\":\"6667 Cassie Row\\nPort Gloria, TN 44595-2413\",\"phone\":\"+1.820.253.3511\",\"owner\":\"Esther O'Hara\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"products\":[{\"id\":10,\"name\":\"magnam\",\"description\":\"Saepe eum ea dolorem quisquam harum aliquam aut et.\",\"price\":\"351.34\",\"store_id\":20,\"created_at\":\"2025-02-05T07:08:25.000000Z\",\"updated_at\":\"2025-02-05T07:08:25.000000Z\"}]}]}",
+                            "code": 500,
+                            "body": "{\n    \"message\": \"Server Error\"\n}",
                             "name": ""
                         }
                     ]
@@ -1173,31 +1819,106 @@
                             "formdata": [
                                 {
                                     "key": "name",
-                                    "value": "gngei",
+                                    "value": "abtqczpbo",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "type",
-                                    "value": "zsnxbzvbtxzrrswpsm",
+                                    "value": "akehrjfpfgklayrhrof",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "country",
-                                    "value": "xwmipoiirdmqdoehx",
+                                    "value": "okacudxrg",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "address",
-                                    "value": "awlweqdxvfklu",
+                                    "value": "dbkyyunsmywqoseu",
                                     "type": "text",
                                     "description": "Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "phone",
-                                    "value": "xecohzdwpmak",
+                                    "value": "jaufxpblbdgixilwux",
+                                    "type": "text",
+                                    "description": "Must not be greater than 20 characters."
+                                },
+                                {
+                                    "key": "image",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/stores\/{store_id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/stores\/:store_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/stores\/:store_id",
+                            "variable": [
+                                {
+                                    "id": "store_id",
+                                    "key": "store_id",
+                                    "value": "1",
+                                    "description": "The ID of the store."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "slklgqonxniuxldrfpx",
+                                    "type": "text",
+                                    "description": "Must not be greater than 255 characters."
+                                },
+                                {
+                                    "key": "type",
+                                    "value": "tpgobrbyghwipdabmu",
+                                    "type": "text",
+                                    "description": "Must not be greater than 255 characters."
+                                },
+                                {
+                                    "key": "country",
+                                    "value": "tfiffhwzhqhcxmwrielz",
+                                    "type": "text",
+                                    "description": "Must not be greater than 255 characters."
+                                },
+                                {
+                                    "key": "address",
+                                    "value": "dyjovthlyqdzyivkgr",
+                                    "type": "text",
+                                    "description": "Must not be greater than 255 characters."
+                                },
+                                {
+                                    "key": "phone",
+                                    "value": "tdok",
                                     "type": "text",
                                     "description": "Must not be greater than 20 characters."
                                 },
@@ -1266,49 +1987,10 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"name\":\"Koss Ltd\",\"type\":\"consequatur\",\"country\":\"Anguilla\",\"address\":\"6767 Upton Orchard Suite 737\\nPort Orpha, ND 18441-2630\",\"phone\":\"802.573.2698\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"points\":134,\"products\":[]}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"name\":\"matjaaaaaaaar\",\"type\":\"consequatur\",\"country\":\"Anguilla\",\"address\":\"6767 Upton Orchard Suite 737Port Orpha, ND 18441-2630\",\"phone\":\"802.573.2698\",\"image\":\"https:\\\/\\\/cdn.britannica.com\\\/16\\\/204716-050-8BB76BE8\\\/Walmart-store-Mountain-View-California.jpg\",\"points\":134,\"products\":[]}}",
                             "name": ""
                         }
                     ]
-                },
-                {
-                    "name": "PATCH api\/stores\/{store_id}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/stores\/:store_id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/stores\/:store_id",
-                            "variable": [
-                                {
-                                    "id": "store_id",
-                                    "key": "store_id",
-                                    "value": "1",
-                                    "description": "The ID of the store."
-                                }
-                            ]
-                        },
-                        "method": "PATCH",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"name\":\"cdbrqbddjwdblpwjooviy\",\"type\":\"gpqferprwyybbkok\",\"country\":\"ygpjjbqr\",\"address\":\"ytwqqvrqfntwmw\",\"phone\":\"zhqpbh\"}"
-                        },
-                        "description": "",
-                        "auth": {
-                            "type": "noauth"
-                        }
-                    },
-                    "response": []
                 },
                 {
                     "name": "DELETE api\/stores\/{store_id}",

@@ -70,4 +70,13 @@ class RoomController extends Controller
         $room = $this->roomService->createWithImage($dto);
         return $this->success(data: new RoomResource($room), statusCode: 201);
     }
+
+    #[Get(uri: '/owner/{room}', middleware: ['auth:sanctum'])]
+    public function isOwner(Request $request, Room $room)
+    {
+        if ($room->host_id === $request->user()->id) {
+            return response()->json(["success" => true]);
+        }
+        return response()->json(["success" => false]);
+    }
 }

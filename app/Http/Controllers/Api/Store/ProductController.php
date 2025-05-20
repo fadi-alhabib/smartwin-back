@@ -27,15 +27,22 @@ class ProductController extends Controller
     #[Get('/')]
     public function index(Request $request)
     {
-        $perPage = $request->get('per_page', 20);  // Default per page = 20
-        $page = $request->get('page', 1);  // Default page = 1
+        $perPage = $request->get('per_page', 20);
+        $page = $request->get('page', 1);
+        $country = $request->get('country');
 
-        // Paginate the products
-        $products = Product::whereHas('images')->whereHas('store', function ($q) {
-            $q->where('is_active', true);
-        })->paginate($perPage, ['*'], 'page', $page);;
+        $products = Product::query()
+            ->whereHas('images')
+            ->whereHas('store', function ($query) use ($country) {
+                $query->where('is_active', true);
+                if ($country) {
+                    $query->where('country', $country);
+                }
+            });
 
-        return $this->success(data: ProductResource::collection($products));
+        $paginatedProducts = $products->paginate($perPage, ['*'], 'page', $page);
+
+        return $this->success(data: ProductResource::collection($paginatedProducts));
     }
 
 

@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\Common\Contracts\ImageServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 use Spatie\RouteAttributes\Attributes\Post;
@@ -45,12 +46,45 @@ class AuthController extends Controller
         $otp = rand(100000, 999999);
         $expiresAt = now()->addMinutes(15);
 
+        // Update or create user with OTP details
         $user = User::updateOrCreate(
             ['phone' => $data['phone']],
             ['otp' => $otp, 'otp_expires_at' => $expiresAt]
         );
 
-        return $this->success(message: 'OTP sent successfully.');
+        // Prepare SMS API parameters
+        $smsParams = [
+            'user_name' => "Smart Win1",
+            'password' => "Pp@1234567",
+            'msg' => "إن كود التفعيل الخاص بالتطبيق هو:\n$otp\nلا تشارك هذا الرمز مع احد.",
+            'sender' => "Smart Win",
+            'to' => "963" . ltrim($data['phone'], 0) . ";",
+        ];
+
+        // Construct API URL with parameters
+        $apiUrl = 'https://bms.syriatel.sy/API/SendSMS.aspx';
+
+        try {
+            // Send the SMS request
+            $response = Http::withoutVerifying()->get($apiUrl, $smsParams);
+
+            // Check if the request was successful
+            if ($response->successful()) {
+                return $this->success(message: 'OTP sent successfully.');
+            } else {
+                // Log the error and return failure
+                Log::error("Failed to send OTP: " . $response->body());
+                return $this->error(message: 'Failed to send OTP. Please try again later.');
+            }
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            // Handle connection timeout or network errors
+            Log::error("OTP sending failed: " . $e->getMessage());
+            return $this->failed('An error occurred while connecting to the SMS service.');
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            Log::error("OTP sending failed: " . $e->getMessage());
+            return $this->failed('An error occurred while sending OTP.');
+        }
     }
 
     #[Post('/verify-otp')]

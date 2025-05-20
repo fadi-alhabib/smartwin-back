@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'user_id', 'status'];
+    protected $fillable = ['title', 'admin_id', 'status'];
 
     // Relationships
     public function user()
