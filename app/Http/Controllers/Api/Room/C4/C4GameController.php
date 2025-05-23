@@ -55,7 +55,7 @@ class C4GameController extends Controller
             $winner->points += 10;
             $winner->save();
         } else if ($user->id === $c4game->challenger_id) {
-            $winner = User::find($room->host()->id);
+            $winner = User::find($room->host_id);
             $winner->points += 10;
             $winner->save();
         } else {
