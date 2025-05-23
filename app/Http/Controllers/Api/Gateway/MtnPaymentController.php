@@ -23,7 +23,7 @@ class MtnPaymentController extends Controller
 
     public function __construct(SignatureService $sig)
     {
-        $this->baseUrl = config('mtnpayment.base_url');
+        $this->baseUrl = env("MTN_BASE_URL");
         $this->sig     = $sig;
     }
 
@@ -32,13 +32,13 @@ class MtnPaymentController extends Controller
     {
         $body = [
             'Key'    => $this->sig->getPublicKeyParameter(),
-            'Secret' => config('mtnpayment.terminal_secret'),
-            'Serial' => config('mtnpayment.terminal_serial'),
+            'Secret' => env("MTN_TERMINAL_SECRET"),
+            'Serial' => env("MTN_TERMINAL_SERIAL"),
         ];
 
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/pos/activate',
-            'Subject'         => config('mtnpayment.terminal_id'),
+            'Subject'         => env("MTN_TERMINAL_ID"),
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/pos/activate", $body);
@@ -46,7 +46,7 @@ class MtnPaymentController extends Controller
         if ($res->successful()) {
             $data = $res->json('Settings', []);
             MtnTerminal::updateOrCreate(
-                ['terminal_id' => config('mtnpayment.terminal_id')],
+                ['terminal_id' => env("MTN_TERMINAL_ID")],
                 ['settings'    => $data, 'activated_at' => now()]
             );
             return response()->json(['message' => 'Activated', 'settings' => $data]);
@@ -67,7 +67,7 @@ class MtnPaymentController extends Controller
 
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/invoice/create',
-            'Subject'         => config('mtnpayment.terminal_id'),
+            'Subject'         => env("MTN_TERMINAL_ID"),
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/invoice/create", $body);
@@ -96,7 +96,7 @@ class MtnPaymentController extends Controller
 
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/payment_phone/initiate',
-            'Subject'         => config('mtnpayment.terminal_id'),
+            'Subject'         => env("MTN_TERMINAL_ID"),
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/payment_phone/initiate", $body);
@@ -107,6 +107,7 @@ class MtnPaymentController extends Controller
     /** 4. تأكيد الدفع (confirm) */
     public function confirmPayment(ConfirmPaymentRequest $req)
     {
+        $user = $req->user();
         $p    = MtnPayment::where('guid', $req->guid)->firstOrFail();
         $body = [
             'Phone'           => $p->phone,
@@ -118,7 +119,7 @@ class MtnPaymentController extends Controller
 
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/payment_phone/confirm',
-            'Subject'         => config('mtnpayment.terminal_id'),
+            'Subject'         => env("MTN_TERMINAL_ID"),
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/payment_phone/confirm", $body);
@@ -138,7 +139,7 @@ class MtnPaymentController extends Controller
 
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/invoice/refund/initiate',
-            'Subject'         => config('mtnpayment.terminal_id'),
+            'Subject'         => env("MTN_TERMINAL_ID"),
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/invoice/refund/initiate", $body);
@@ -168,7 +169,7 @@ class MtnPaymentController extends Controller
 
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/invoice/refund/confirm',
-            'Subject'         => config('mtnpayment.terminal_id'),
+            'Subject'         => env("MTN_TERMINAL_ID"),
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/invoice/refund/confirm", $body);
@@ -194,7 +195,7 @@ class MtnPaymentController extends Controller
 
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/invoice/refund/cancel',
-            'Subject'         => config('mtnpayment.terminal_id'),
+            'Subject'         => env("MTN_TERMINAL_ID"),
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/invoice/refund/cancel", $body);

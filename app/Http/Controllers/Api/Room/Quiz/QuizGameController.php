@@ -78,7 +78,7 @@ class QuizGameController extends Controller
         $created_at = Carbon::parse($quiz->created_at);
         $minutes_taken = (int) $created_at->diffInMinutes($quiz->end_time);
 
-        $score = $this->calculateScore($quiz->right_answers_count, $user->points);
+        $score = $this->calculateScore($quiz->right_answers_count);
         $user->points += $score;
 
         $room->available_time -= $minutes_taken;
@@ -102,6 +102,8 @@ class QuizGameController extends Controller
             'minutes_taken' => $minutes_taken,
         ], message: "Game over");
     }
+
+
 
     #[Post(uri: 'broadcast-answer', middleware: ['auth:sanctum'])]
     public function broadcastAnswer(Room $room, Request $request)
@@ -255,12 +257,9 @@ class QuizGameController extends Controller
         }
     }
 
-    private function calculateScore($rightAnswersCount, $userPoints)
+    private function calculateScore($rightAnswersCount)
     {
-        if ($userPoints < 500) {
-            return $rightAnswersCount > 8 ? 10 : ($rightAnswersCount > 6 ? 5 : 0);
-        } else {
-            return $rightAnswersCount > 8 ? 10 : -10;
-        }
+
+        return $rightAnswersCount > 8 ? 10 : ($rightAnswersCount > 6 ? 5 : -10);
     }
 }

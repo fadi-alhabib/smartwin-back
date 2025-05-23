@@ -18,7 +18,7 @@ Route::prefix('mtn-payments')->group(function () {
     Route::post('/activate', [MtnPaymentController::class, 'activateTerminal']);
     Route::post('/create-invoice', [MtnPaymentController::class, 'createInvoice']);
     Route::post('/initiate',        [MtnPaymentController::class, 'initiatePayment']);
-    Route::post('/confirm',         [MtnPaymentController::class, 'confirmPayment']);
+    Route::post('/confirm',         [MtnPaymentController::class, 'confirmPayment'])->middleware('auth:sanctum');
     Route::post('/refund/initiate', [MtnPaymentController::class, 'refundInitiate']);
     Route::post('/refund/confirm',  [MtnPaymentController::class, 'refundConfirm']);
     Route::post('/refund/cancel',   [MtnPaymentController::class, 'refundCancel']);

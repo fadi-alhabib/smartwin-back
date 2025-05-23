@@ -26,10 +26,10 @@ class AdsController extends Controller
 
         $room = Room::where('host_id', $user->id)->first();
 
-        if ($room && $room->available_time == 0 && $room->consumed_at && Carbon::parse($room->consumed_at)->diffInHours(now()) >= 24) {
-            $room->available_time = 12;
-            $room->save();
-        }
+        // if ($room && $room->available_time == 0 && $room->consumed_at && Carbon::parse($room->consumed_at)->diffInHours(now()) >= 24) {
+        //     $room->available_time = 12;
+        //     $room->save();
+        // }
         return $this->success(data: ['ads' => AdResource::collection($ads), 'points' => $user->points, 'available_time' => $room?->available_time, 'room_id' => $room?->id]);
     }
 }
