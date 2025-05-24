@@ -49,6 +49,7 @@ class QuestionController extends Controller
         // }
 
         // Handle file upload if an image is provided
+        $imagePath = null;
         if ($request->file('image')) {
             $imagePath = $this->imagesService->uploadImage($request->file('image'), '/questions');
         }
