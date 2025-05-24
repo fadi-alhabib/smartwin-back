@@ -15,7 +15,7 @@ Route::get('/user', function (Request $request) {
 
 
 Route::prefix('mtn-payments')->group(function () {
-    Route::post('/activate', [MtnPaymentController::class, 'activateTerminal']);
+    Route::get('/activate', [MtnPaymentController::class, 'activateTerminal']);
     Route::post('/create-invoice', [MtnPaymentController::class, 'createInvoice']);
     Route::post('/initiate',        [MtnPaymentController::class, 'initiatePayment']);
     Route::post('/confirm',         [MtnPaymentController::class, 'confirmPayment'])->middleware('auth:sanctum');
