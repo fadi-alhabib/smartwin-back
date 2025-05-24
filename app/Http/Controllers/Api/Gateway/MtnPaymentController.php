@@ -14,6 +14,7 @@ use App\Models\MtnRefund;
 use App\Services\Gateway\Mtn\SignatureService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 
 class MtnPaymentController extends Controller
@@ -71,7 +72,7 @@ class MtnPaymentController extends Controller
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/invoice/create", $body);
-
+        Log::alert($res->body());
         if ($res->successful()) {
             MtnPayment::create([
                 'invoice_number'   => $inv,
