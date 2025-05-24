@@ -23,7 +23,7 @@ class MtnPaymentController extends Controller
 
     public function __construct(SignatureService $sig)
     {
-        $this->baseUrl = env("MTN_BASE_URL");
+        $this->baseUrl = "https://cashmobile.mtnsyr.com:9000";
         $this->sig     = $sig;
     }
 
