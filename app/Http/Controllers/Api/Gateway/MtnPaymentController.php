@@ -64,6 +64,7 @@ class MtnPaymentController extends Controller
 
         $body = ['Amount' => $amt, 'Invoice' => $inv, 'TTL' => $ttl];
         $xSig = $this->sig->sign($body);
+        Log::alert($body);
         Log::alert($xSig);
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/invoice/create',
