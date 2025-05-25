@@ -26,8 +26,9 @@ class SignatureService
     public function sign(array $body): string
     {
         $json = json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        $hash = hash('sha256', $json, true);
-        openssl_private_encrypt($hash, $sig, openssl_pkey_get_private($this->privateKey));
+        // $hash = hash('sha256', $json, true);
+        openssl_sign($json, $sig, openssl_pkey_get_private($this->privateKey), OPENSSL_ALGO_SHA256);
+
         return base64_encode($sig);
     }
 
