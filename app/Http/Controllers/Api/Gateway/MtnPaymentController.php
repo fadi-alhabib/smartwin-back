@@ -62,7 +62,7 @@ class MtnPaymentController extends Controller
         $amt  = $req->amount * 100;
         $ttl  = $req->ttl ?? 15;
 
-        $body = ['Amount' => $amt, 'Invoice' => $inv, 'TTL' => $ttl, 'Session' => $sess];
+        $body = ['Amount' => $amt, 'Invoice' => $inv, 'TTL' => $ttl];
         $xSig = $this->sig->sign($body);
         Log::alert($xSig);
         $res = Http::withHeaders([
