@@ -95,7 +95,7 @@ class MtnPaymentController extends Controller
         // Create payment and get ID
         $payment = MtnPayment::create([
             'amount' => $amt,
-
+            'user_id' => $req->user()->id,
         ]);
 
 

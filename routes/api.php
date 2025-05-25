@@ -14,11 +14,11 @@ Route::get('/user', function (Request $request) {
 // routes/api.php
 
 
-Route::prefix('mtn-payments')->group(function () {
-    Route::get('/activate', [MtnPaymentController::class, 'activateTerminal']);
+Route::prefix('mtn-payments')->middleware('auth:sanctum')->group(function () {
+
     Route::post('/create-invoice', [MtnPaymentController::class, 'createInvoice']);
     Route::post('/initiate',        [MtnPaymentController::class, 'initiatePayment']);
-    Route::post('/confirm',         [MtnPaymentController::class, 'confirmPayment'])->middleware('auth:sanctum');
+    Route::post('/confirm',         [MtnPaymentController::class, 'confirmPayment']);
     Route::post('/refund/initiate', [MtnPaymentController::class, 'refundInitiate']);
     Route::post('/refund/confirm',  [MtnPaymentController::class, 'refundConfirm']);
     Route::post('/refund/cancel',   [MtnPaymentController::class, 'refundCancel']);
