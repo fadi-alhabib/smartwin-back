@@ -63,11 +63,12 @@ class MtnPaymentController extends Controller
         $ttl  = $req->ttl ?? 15;
 
         $body = ['Amount' => $amt, 'Invoice' => $inv, 'TTL' => $ttl, 'Session' => $sess];
-
+        $xSig = $this->sig->sign($body);
+        Log::alert($xSig);
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/invoice/create',
             'Subject'         => config("mtn.terminal_id"),
-            'X-Signature'     => $this->sig->sign($body),
+            'X-Signature'     => $xSig,
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/invoice/create", $body);
 
