@@ -55,18 +55,55 @@ class MtnPaymentController extends Controller
     }
 
     /** 2. إنشاء فاتورة */
+    // public function createInvoice(CreateInvoiceRequest $req)
+    // {
+    //     $inv  = Str::uuid()->toString();
+    //     $sess = rand(100000, 999999);
+    //     $amt  = $req->amount * 100;
+    //     $ttl  = $req->ttl ?? 15;
+
+    //     $body = ['Amount' => $amt, 'Invoice' => $inv, 'TTL' => $ttl];
+    //     $xSig = $this->sig->sign($body);
+    //     Log::alert($body);
+    //     Log::alert($xSig);
+    //     $res = Http::withHeaders([
+    //         'Request-Name'    => 'pos_web/invoice/create',
+    //         'Subject'         => config("mtn.terminal_id"),
+    //         'X-Signature'     => $xSig,
+    //         'Accept-Language' => 'en',
+    //     ])->post("{$this->baseUrl}/pos_web/invoice/create", $body);
+
+    //     Log::alert($res->json());
+
+    //     if ($res->successful()) {
+    //         MtnPayment::create([
+    //             'invoice_number' => $inv,
+    //             'session_number' => $sess,
+    //             'amount'         => $amt,
+    //             'status'         => 1,
+    //         ]);
+    //         return response()->json(['invoice' => $inv, 'resp' => $res->json()]);
+    //     }
+
+    //     return response()->json($res->json(), 400);
+    // }
     public function createInvoice(CreateInvoiceRequest $req)
     {
-        $inv  = "2hj2j2j2j2j2j";
-        // $inv  = Str::uuid()->toString();
-        $sess = rand(100000, 999999);
-        $amt  = $req->amount * 100;
-        $ttl  = $req->ttl ?? 15;
+        $amt = $req->amount * 100;
+        $ttl = $req->ttl ?? 15;
 
-        $body = ['Amount' => $amt, 'Invoice' => $inv, 'TTL' => $ttl];
+        // Create payment and get ID
+        $payment = MtnPayment::create([
+            'amount' => $amt,
+
+        ]);
+
+
+        $invoice = (string) $payment->id;
+
+        $body = ['Amount' => $amt, 'Invoice' => $invoice, 'TTL' => $ttl];
         $xSig = $this->sig->sign($body);
-        Log::alert($body);
-        Log::alert($xSig);
+
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/invoice/create',
             'Subject'         => config("mtn.terminal_id"),
@@ -74,20 +111,13 @@ class MtnPaymentController extends Controller
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/invoice/create", $body);
 
-        Log::alert($res->json());
-
         if ($res->successful()) {
-            MtnPayment::create([
-                'invoice_number' => $inv,
-                'session_number' => $sess,
-                'amount'         => $amt,
-                'status'         => 1,
-            ]);
-            return response()->json(['invoice' => $inv, 'resp' => $res->json()]);
+            return response()->json(['invoice' => $invoice, 'resp' => $res->json()]);
         }
 
         return response()->json($res->json(), 400);
     }
+
 
     /** 3. بدء الدفع (initiate) */
     public function initiatePayment(InitiatePaymentRequest $req)
