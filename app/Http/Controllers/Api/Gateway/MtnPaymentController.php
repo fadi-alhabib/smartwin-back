@@ -57,12 +57,13 @@ class MtnPaymentController extends Controller
     /** 2. إنشاء فاتورة */
     public function createInvoice(CreateInvoiceRequest $req)
     {
-        $inv  = Str::uuid()->toString();
-
+        $inv  = "2hj2j2j2j2j2j";
+        // $inv  = Str::uuid()->toString();
+        $sess = rand(100000, 999999);
         $amt  = $req->amount * 100;
         $ttl  = $req->ttl ?? 15;
 
-        $body = ['Amount' => $amt, 'Invoice' => 1, 'TTL' => $ttl];
+        $body = ['Amount' => $amt, 'Invoice' => $inv, 'TTL' => $ttl];
         $xSig = $this->sig->sign($body);
         Log::alert($body);
         Log::alert($xSig);
