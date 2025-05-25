@@ -58,11 +58,11 @@ class MtnPaymentController extends Controller
     public function createInvoice(CreateInvoiceRequest $req)
     {
         $inv  = Str::uuid()->toString();
-        $sess = rand(100000, 999999);
+
         $amt  = $req->amount * 100;
         $ttl  = $req->ttl ?? 15;
 
-        $body = ['Amount' => $amt, 'Invoice' => $inv, 'TTL' => $ttl, 'Session' => $sess];
+        $body = ['Amount' => $amt, 'Invoice' => $inv, 'TTL' => $ttl];
         $xSig = $this->sig->sign($body);
         Log::alert($body);
         Log::alert($xSig);
