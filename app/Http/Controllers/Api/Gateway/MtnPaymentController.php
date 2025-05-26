@@ -19,7 +19,7 @@ use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Post;
 use Spatie\RouteAttributes\Attributes\Prefix;
 
-#[Prefix('api/mtn-payments'), Middleware(["auth:sanctum"])]
+#[Prefix('api/mtn-payments')]
 class MtnPaymentController extends Controller
 {
     protected $baseUrl;
@@ -59,7 +59,7 @@ class MtnPaymentController extends Controller
     //     return response()->json($res->json(), $res->status());
     // }
 
-    #[Post("create-invoice")]
+    #[Post("create-invoice", middleware: ["auth:sanctum"])]
     public function createInvoice(CreateInvoiceRequest $req)
     {
         $amt = $req->amount * 100;
@@ -97,7 +97,7 @@ class MtnPaymentController extends Controller
     // }
 
 
-    #[Post('/initiate')]
+    #[Post('/initiate', middleware: ["auth:sanctum"])]
     public function initiatePayment(InitiatePaymentRequest $req)
     {
         $user = $req->user();
@@ -127,7 +127,7 @@ class MtnPaymentController extends Controller
         }
     }
 
-    #[Post('/confirm')]
+    #[Post('/confirm', middleware: ["auth:sanctum"])]
     public function confirmPayment(ConfirmPaymentRequest $req)
     {
         $user = $req->user();
