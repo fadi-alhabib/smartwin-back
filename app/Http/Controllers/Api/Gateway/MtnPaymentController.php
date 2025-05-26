@@ -131,7 +131,7 @@ class MtnPaymentController extends Controller
     #[Post('/confirm', middleware: ["auth:sanctum"])]
     public function confirmPayment(ConfirmPaymentRequest $req)
     {
-        $user = User::find(auth()->id);
+        $user = User::find($req->user()->id);
         $p    = MtnPayment::where('user_id', $user->id)->latest()->first();
         $body = [
             'Phone'           => $p->phone,
