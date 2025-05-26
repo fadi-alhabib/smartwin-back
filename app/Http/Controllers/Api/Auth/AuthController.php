@@ -43,8 +43,8 @@ class AuthController extends Controller
     public function sendOtp(SendOtpRequest $request)
     {
         $data = $request->validated();
-        $otp = 111111;
-        // $otp = rand(100000, 999999);
+        // $otp = 111111;
+        $otp = rand(100000, 999999);
         $expiresAt = now()->addMinutes(15);
 
         // Update or create user with OTP details
