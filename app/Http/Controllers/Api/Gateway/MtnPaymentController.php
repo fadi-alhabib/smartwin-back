@@ -72,7 +72,7 @@ class MtnPaymentController extends Controller
         ]);
 
 
-        $invoice = (string) $payment->id;
+        $invoice =  $payment->id;
 
         $body = ['Amount' => $amt, 'Invoice' => $invoice, 'TTL' => $ttl];
         $xSig = $this->sig->sign($body);
