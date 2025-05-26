@@ -20,6 +20,7 @@ class MtnPayment extends Model
         'response_data',
         'meta',
         'invoice_number',
+        'user_id',
     ];
 
     protected $casts = [
