@@ -68,7 +68,7 @@ class MtnPaymentController extends Controller
         // Create payment and get ID
         $payment = MtnPayment::create([
             'amount' => $amt,
-            'user_id' => auth('sanctum')->user()->id,
+            'user_id' => auth()->user()->id,
         ]);
 
 
@@ -100,7 +100,7 @@ class MtnPaymentController extends Controller
     #[Post('/initiate', middleware: ["auth:sanctum"])]
     public function initiatePayment(InitiatePaymentRequest $req)
     {
-        $user = auth('sanctum')->user();
+        $user = auth()->user();
         $p    = MtnPayment::where('user_id', $user->id)->latest()->first();
         $guid = Str::uuid()->toString();
         $p->update(['guid' => $guid, 'phone' => $req->phone]);
@@ -130,7 +130,7 @@ class MtnPaymentController extends Controller
     #[Post('/confirm', middleware: ["auth:sanctum"])]
     public function confirmPayment(ConfirmPaymentRequest $req)
     {
-        $user = auth('sanctum')->user();
+        $user = auth()->user();
         $p    = MtnPayment::where('user_id', $user->id)->latest()->first();
         $body = [
             'Phone'           => $p->phone,
