@@ -175,7 +175,7 @@ class MtnPaymentController extends Controller
         } elseif ($resBody["Errno"] == 662) {
             return response()->json(["message" => "كود التفعيل خاطئ يرجى التحقق منه و إعادة المحاولة"]);
         } else {
-            return response()->json(["message" => "لقد حدث خطأ يرجى إعادة المحاولة"], 400);
+            return response()->json(["message" => "لقد حدث خطأ يرجى إعادة المحاولة", $res->json()], 400);
         }
         return response()->json($res->json(), $res->status());
     }
