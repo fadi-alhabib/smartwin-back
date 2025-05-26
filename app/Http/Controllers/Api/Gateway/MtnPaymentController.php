@@ -140,9 +140,9 @@ class MtnPaymentController extends Controller
         $body = [
             'Phone'           => $p->phone,
             'Guid'            => $p->guid,
-            'OperationNumber' => $req->operation_number,
+            'OperationNumber' => (int) $req->operation_number,
             'Invoice'         => $p->id,
-            'Code'            => $req->code,
+            'Code'            => $this->sig->signOtpCode($req->code),
         ];
         Log::alert($body);
         $res = Http::withHeaders([
@@ -150,7 +150,7 @@ class MtnPaymentController extends Controller
             'Subject'         => config("mtn.terminal_id"),
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
-        ])->post("{$this->baseUrl}/pos_web/payment_phone/confirm", [...$body, 'Code' => $this->sig->signOtpCode($req->code)]);
+        ])->post("{$this->baseUrl}/pos_web/payment_phone/confirm", $body);
         $resBody = $res->json();
         if ($resBody['Errno'] == 0) {
             if ($p->amount == 1200 || $p->amount == 1200000) {
