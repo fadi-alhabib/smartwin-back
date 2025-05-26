@@ -14,12 +14,12 @@ Route::get('/user', function (Request $request) {
 // routes/api.php
 
 
-Route::prefix('mtn-payments')->middleware('auth:sanctum')->group(function () {
+// Route::prefix('mtn-payments')->middleware('auth:sanctum')->group(function () {
 
-    Route::post('/create-invoice', [MtnPaymentController::class, 'createInvoice']);
-    Route::post('/initiate',        [MtnPaymentController::class, 'initiatePayment']);
-    Route::post('/confirm',         [MtnPaymentController::class, 'confirmPayment']);
-    Route::post('/refund/initiate', [MtnPaymentController::class, 'refundInitiate']);
-    Route::post('/refund/confirm',  [MtnPaymentController::class, 'refundConfirm']);
-    Route::post('/refund/cancel',   [MtnPaymentController::class, 'refundCancel']);
-});
+//     Route::post('/create-invoice', [MtnPaymentController::class, 'createInvoice']);
+//     Route::post('/initiate',        [MtnPaymentController::class, 'initiatePayment']);
+//     Route::post('/confirm',         [MtnPaymentController::class, 'confirmPayment']);
+//     Route::post('/refund/initiate', [MtnPaymentController::class, 'refundInitiate']);
+//     Route::post('/refund/confirm',  [MtnPaymentController::class, 'refundConfirm']);
+//     Route::post('/refund/cancel',   [MtnPaymentController::class, 'refundCancel']);
+// });

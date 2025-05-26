@@ -14,7 +14,11 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
+use Spatie\RouteAttributes\Attributes\Middleware;
+use Spatie\RouteAttributes\Attributes\Post;
+use Spatie\RouteAttributes\Attributes\Prefix;
 
+#[Prefix('mtn-payments'), Middleware(["auth:sanctum"])]
 class MtnPaymentController extends Controller
 {
     protected $baseUrl;
@@ -26,67 +30,35 @@ class MtnPaymentController extends Controller
         $this->sig     = $sig;
     }
 
-    /** 1. تفعيل التيرمنال مرة واحدة */
-    public function activateTerminal(Request $req)
-    {
-        $body = [
-            'Key'    => $this->sig->getPublicKeyParameter(),
-            'Secret' => config("mtn.terminal_secret"),
-            'Serial' => config("mtn.terminal_serial"),
-        ];
-
-        $res = Http::withHeaders([
-            'Request-Name'    => 'pos_web/pos/activate',
-            'Subject'         => config("mtn.terminal_id"),
-            'X-Signature'     => $this->sig->sign($body),
-            'Accept-Language' => 'en',
-        ])->post("{$this->baseUrl}/pos_web/pos/activate", $body);
-
-        if ($res->successful()) {
-            $data = $res->json('Settings', []);
-            MtnTerminal::updateOrCreate(
-                ['terminal_id' => config("mtn.terminal_id")],
-                ['settings' => $data, 'activated_at' => now()]
-            );
-            return response()->json(['message' => 'Activated', 'settings' => $data]);
-        }
-
-        return response()->json($res->json(), $res->status());
-    }
-
-    /** 2. إنشاء فاتورة */
-    // public function createInvoice(CreateInvoiceRequest $req)
+    // /** 1. تفعيل التيرمنال مرة واحدة */
+    // public function activateTerminal(Request $req)
     // {
-    //     $inv  = Str::uuid()->toString();
-    //     $sess = rand(100000, 999999);
-    //     $amt  = $req->amount * 100;
-    //     $ttl  = $req->ttl ?? 15;
+    //     $body = [
+    //         'Key'    => $this->sig->getPublicKeyParameter(),
+    //         'Secret' => config("mtn.terminal_secret"),
+    //         'Serial' => config("mtn.terminal_serial"),
+    //     ];
 
-    //     $body = ['Amount' => $amt, 'Invoice' => $inv, 'TTL' => $ttl];
-    //     $xSig = $this->sig->sign($body);
-    //     Log::alert($body);
-    //     Log::alert($xSig);
     //     $res = Http::withHeaders([
-    //         'Request-Name'    => 'pos_web/invoice/create',
+    //         'Request-Name'    => 'pos_web/pos/activate',
     //         'Subject'         => config("mtn.terminal_id"),
-    //         'X-Signature'     => $xSig,
+    //         'X-Signature'     => $this->sig->sign($body),
     //         'Accept-Language' => 'en',
-    //     ])->post("{$this->baseUrl}/pos_web/invoice/create", $body);
-
-    //     Log::alert($res->json());
+    //     ])->post("{$this->baseUrl}/pos_web/pos/activate", $body);
 
     //     if ($res->successful()) {
-    //         MtnPayment::create([
-    //             'invoice_number' => $inv,
-    //             'session_number' => $sess,
-    //             'amount'         => $amt,
-    //             'status'         => 1,
-    //         ]);
-    //         return response()->json(['invoice' => $inv, 'resp' => $res->json()]);
+    //         $data = $res->json('Settings', []);
+    //         MtnTerminal::updateOrCreate(
+    //             ['terminal_id' => config("mtn.terminal_id")],
+    //             ['settings' => $data, 'activated_at' => now()]
+    //         );
+    //         return response()->json(['message' => 'Activated', 'settings' => $data]);
     //     }
 
-    //     return response()->json($res->json(), 400);
+    //     return response()->json($res->json(), $res->status());
     // }
+
+    #[Post("api/create-invoice")]
     public function createInvoice(CreateInvoiceRequest $req)
     {
         $amt = $req->amount * 100;
@@ -119,7 +91,7 @@ class MtnPaymentController extends Controller
     }
 
 
-    /** 3. بدء الدفع (initiate) */
+    #[Post('/initiate')]
     public function initiatePayment(InitiatePaymentRequest $req)
     {
         $p    = MtnPayment::where('invoice_number', $req->invoice_number)->firstOrFail();
@@ -138,7 +110,7 @@ class MtnPaymentController extends Controller
         return response()->json($res->json(), $res->status());
     }
 
-    /** 4. تأكيد الدفع (confirm) */
+    #[Post('/confirm')]
     public function confirmPayment(ConfirmPaymentRequest $req)
     {
         $user = $req->user();
