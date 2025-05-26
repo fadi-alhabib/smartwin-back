@@ -145,6 +145,7 @@ class MtnPaymentController extends Controller
             'Code'            => $this->sig->signOtpCode($req->code),
         ];
         Log::alert($body);
+        Log::alert($this->sig->sign($body));
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/payment_phone/confirm',
             'Subject'         => config("mtn.terminal_id"),
