@@ -147,7 +147,7 @@ class MtnPaymentController extends Controller
         Log::alert($body);
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/payment_phone/confirm',
-            // 'Subject'         => config("mtn.terminal_id"),
+            'Subject'         => config("mtn.terminal_id"),
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/payment_phone/confirm", $body);
