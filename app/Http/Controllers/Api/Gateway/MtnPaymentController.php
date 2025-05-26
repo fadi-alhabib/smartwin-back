@@ -106,7 +106,7 @@ class MtnPaymentController extends Controller
         $guid = Str::uuid()->toString();
         $p->update(['guid' => $guid, 'phone' => $req->phone]);
 
-        $body = ['Invoice' => $p->id, 'Phone' => $p->phone, 'Guid' => $p->guid];
+        $body = ['Invoice' => (int)$p->id, 'Phone' => $p->phone, 'Guid' => $p->guid];
 
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/payment_phone/initiate',
