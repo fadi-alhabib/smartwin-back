@@ -100,11 +100,12 @@ class MtnPaymentController extends Controller
     #[Post('/initiate')]
     public function initiatePayment(InitiatePaymentRequest $req)
     {
-        $p    = MtnPayment::where('invoice_number', $req->invoice_number)->firstOrFail();
+        $user = $req->user();
+        $p    = MtnPayment::where('user_id', $user->id)->latest()->first();
         $guid = Str::uuid()->toString();
         $p->update(['guid' => $guid, 'phone' => $req->phone]);
 
-        $body = ['Invoice' => $p->invoice_number, 'Phone' => $p->phone, 'Guid' => $guid];
+        $body = ['Invoice' => $p->id, 'Phone' => $p->phone, 'Guid' => $p->guid];
 
         $res = Http::withHeaders([
             'Request-Name'    => 'pos_web/payment_phone/initiate',
@@ -112,20 +113,30 @@ class MtnPaymentController extends Controller
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/payment_phone/initiate", $body);
-
-        return response()->json($res->json(), $res->status());
+        $resBody = $res->json();
+        if ($resBody['Errno'] == 0) {
+            return response()->json($res->json(), $res->status());
+        } elseif ($resBody['Errno'] == 409) {
+            return response()->json(["message" => "قد تم دفع الفاتورة من قبل"], 400);
+        } elseif ($resBody['Errno'] == 403) {
+            return response()->json(["message" => "قد تم حظر حسابك من mtn"], 400);
+        } elseif ($resBody["Errno"] == 404) {
+            return response()->json(["message" => "ليس لديك حساب في mtn cash"], 400);
+        } else {
+            return response()->json(["message" => "لقد حدث خطأ يرجى إعادة المحاولة"], 400);
+        }
     }
 
     #[Post('/confirm')]
     public function confirmPayment(ConfirmPaymentRequest $req)
     {
         $user = $req->user();
-        $p    = MtnPayment::where('guid', $req->guid)->firstOrFail();
+        $p    = MtnPayment::where('user_id', $user->id)->latest()->first();
         $body = [
             'Phone'           => $p->phone,
             'Guid'            => $p->guid,
             'OperationNumber' => $req->operation_number,
-            'Invoice'         => $p->invoice_number,
+            'Invoice'         => $p->id,
             'Code'            => $this->sig->signOtpCode($req->code),
         ];
 
@@ -135,11 +146,32 @@ class MtnPaymentController extends Controller
             'X-Signature'     => $this->sig->sign($body),
             'Accept-Language' => 'en',
         ])->post("{$this->baseUrl}/pos_web/payment_phone/confirm", $body);
-
-        if ($res->successful()) {
-            $p->update(['status' => 9, 'transaction_number' => $res->json('Transaction')]);
+        $resBody = $res->json();
+        if ($resBody['Errno'] == 0) {
+            if ($p->amount == 1200 || $p->amount == 1200000) {
+                $user->points += 100;
+            } elseif ($p->amount == 2200 || $p->amount == 2200000) {
+                $user->points += 300;
+            } elseif ($p->amount == 5300 || $p->amount == 5300000) {
+                $user->points += 500;
+            } elseif ($p->amount == 10500 || $p->amount == 10500000) {
+                $user->points += 1000;
+            }
+            $user->save();
+            return response()->json($res->json(), $res->status());
+        } elseif ($resBody['Errno'] == 409) {
+            return response()->json(["message" => "قد تم دفع الفاتورة من قبل"], 400);
+        } elseif ($resBody['Errno'] == 403) {
+            return response()->json(["message" => "قد تم حظر حسابك من mtn"], 400);
+        } elseif ($resBody["Errno"] == 404) {
+            return response()->json(["message" => "ليس لديك حساب في mtn cash"], 400);
+        } elseif ($resBody["Errno"] == 661) {
+            return response()->json(["message" => "لقد انتهى وقت كود التفعيل"]);
+        } elseif ($resBody["Errno"] == 662) {
+            return response()->json(["message" => "كود التفعيل خاطئ يرجى التحقق منه و إعادة المحاولة"]);
+        } else {
+            return response()->json(["message" => "لقد حدث خطأ يرجى إعادة المحاولة"], 400);
         }
-
         return response()->json($res->json(), $res->status());
     }
 

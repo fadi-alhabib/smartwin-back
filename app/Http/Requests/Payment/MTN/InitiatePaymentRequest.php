@@ -22,7 +22,7 @@ class InitiatePaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'invoice_number' => 'required|string|exists:mtn_payments,invoice_number',
+            // 'invoice_number' => 'required|string|exists:mtn_payments,invoice_number',
             'phone'          => 'required|string|regex:/^(\+?\d{7,15})$/',
         ];
     }
