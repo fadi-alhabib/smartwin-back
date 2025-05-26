@@ -102,7 +102,7 @@ class MtnPaymentController extends Controller
     public function initiatePayment(InitiatePaymentRequest $req)
     {
 
-        $p    = MtnPayment::where('user_id', auth()->id)->latest()->first();
+        $p    = MtnPayment::where('user_id', $req->user()->id)->latest()->first();
         $guid = Str::uuid()->toString();
         $p->update(['guid' => $guid, 'phone' => $req->phone]);
 
