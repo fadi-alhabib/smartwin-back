@@ -117,6 +117,8 @@ class MtnPaymentController extends Controller
         $resBody = $res->json();
         if ($resBody['Errno'] == 0) {
             return response()->json($res->json(), $res->status());
+        } elseif ($resBody['Errno'] == 400) {
+            return response()->json(["message" => "الرقم المدخل غير صحيح"], 400);
         } elseif ($resBody['Errno'] == 409) {
             return response()->json(["message" => "قد تم دفع الفاتورة من قبل"], 400);
         } elseif ($resBody['Errno'] == 403) {
