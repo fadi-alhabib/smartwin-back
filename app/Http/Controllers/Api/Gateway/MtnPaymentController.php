@@ -9,6 +9,7 @@ use App\Http\Requests\Payment\MTN\InitiatePaymentRequest;
 use App\Models\MtnTerminal;
 use App\Models\MtnPayment;
 use App\Models\MtnRefund;
+use App\Models\User;
 use App\Services\Gateway\Mtn\SignatureService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
@@ -100,8 +101,8 @@ class MtnPaymentController extends Controller
     #[Post('/initiate', middleware: ["auth:sanctum"])]
     public function initiatePayment(InitiatePaymentRequest $req)
     {
-        $user = $req->user('sanctum');
-        $p    = MtnPayment::where('user_id', $user->id)->latest()->first();
+
+        $p    = MtnPayment::where('user_id', auth()->id)->latest()->first();
         $guid = Str::uuid()->toString();
         $p->update(['guid' => $guid, 'phone' => $req->phone]);
 
@@ -130,7 +131,7 @@ class MtnPaymentController extends Controller
     #[Post('/confirm', middleware: ["auth:sanctum"])]
     public function confirmPayment(ConfirmPaymentRequest $req)
     {
-        $user = auth()->user();
+        $user = User::find(auth()->id);
         $p    = MtnPayment::where('user_id', $user->id)->latest()->first();
         $body = [
             'Phone'           => $p->phone,
