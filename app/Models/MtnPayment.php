@@ -21,6 +21,7 @@ class MtnPayment extends Model
         'meta',
         'invoice_number',
         'user_id',
+        'phone'
     ];
 
     protected $casts = [
