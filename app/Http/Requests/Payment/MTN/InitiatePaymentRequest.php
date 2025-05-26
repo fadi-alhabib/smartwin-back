@@ -23,7 +23,8 @@ class InitiatePaymentRequest extends FormRequest
     {
         return [
             // 'invoice_number' => 'required|string|exists:mtn_payments,invoice_number',
-            'phone'          => 'required|string|regex:/^(\+?\d{7,15})$/',
+            'phone'          => 'required|string',
         ];
     }
 }
+// regex:/^(\+?\d{7,15})$/
