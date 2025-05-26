@@ -23,7 +23,7 @@ class ConfirmPaymentRequest extends FormRequest
     {
         return [
             // 'guid'             => 'required|string|exists:mtn_payments,guid',
-            'operation_number' => 'required|string',
+            'operation_number' => 'required|number',
             'code'             => 'required|string',
         ];
     }
