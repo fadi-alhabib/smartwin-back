@@ -59,7 +59,7 @@ class MtnPaymentController extends Controller
     //     return response()->json($res->json(), $res->status());
     // }
 
-    #[Post("create-invoice", middleware: ["auth:sanctum"])]
+    #[Post("create-invoice", middleware: "auth:sanctum")]
     public function createInvoice(CreateInvoiceRequest $req)
     {
         $amt = $req->amount * 100;
