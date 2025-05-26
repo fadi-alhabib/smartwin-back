@@ -124,7 +124,7 @@ class MtnPaymentController extends Controller
         } elseif ($resBody["Errno"] == 404) {
             return response()->json(["message" => "ليس لديك حساب في mtn cash"], 400);
         } else {
-            return response()->json(["message" => "لقد حدث خطأ يرجى إعادة المحاولة"], 400);
+            return response()->json(["message" => "لقد حدث خطأ يرجى إعادة المحاولة", "body" => $res->json()], 400);
         }
     }
 
