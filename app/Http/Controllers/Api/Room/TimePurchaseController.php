@@ -17,7 +17,7 @@ class TimePurchaseController extends Controller
     #[Post('/', middleware: ["auth:sanctum"])]
     public function buyTime(Room $room, Request $request)
     {
-        $additionalMinutes = (int) $request->input('minutes');
+        $additionalMinutes = (int) $request->input('minutes') * 60;
         $price = (int) $request->input('price');
 
         // Validate input

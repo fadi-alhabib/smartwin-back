@@ -172,7 +172,7 @@ class MtnPaymentController extends Controller
         } elseif ($resBody["Errno"] == 404) {
             return response()->json(["message" => "ليس لديك حساب في mtn cash"], 400);
         } elseif ($resBody["Errno"] == 661) {
-            return response()->json(["message" => "لقد انتهى وقت كود التفعيل"], 400);
+            return response()->json(["message" => "لقد انتهى  وقت كود التفعيل"], 400);
         } elseif ($resBody["Errno"] == 662) {
             return response()->json(["message" => "كود التفعيل خاطئ يرجى التحقق منه و إعادة المحاولة"], 400);
         } else {
