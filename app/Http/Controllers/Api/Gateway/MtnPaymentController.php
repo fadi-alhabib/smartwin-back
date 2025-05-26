@@ -14,11 +14,12 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
+use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Post;
 use Spatie\RouteAttributes\Attributes\Prefix;
 
-#[Prefix('mtn-payments'), Middleware(["auth:sanctum"])]
+#[Prefix('api/mtn-payments'), Middleware(["auth:sanctum"])]
 class MtnPaymentController extends Controller
 {
     protected $baseUrl;
@@ -58,7 +59,7 @@ class MtnPaymentController extends Controller
     //     return response()->json($res->json(), $res->status());
     // }
 
-    #[Post("api/create-invoice")]
+    #[Post("create-invoice")]
     public function createInvoice(CreateInvoiceRequest $req)
     {
         $amt = $req->amount * 100;
@@ -89,6 +90,11 @@ class MtnPaymentController extends Controller
 
         return response()->json($res->json(), 400);
     }
+
+    // #[Get('/invoice/{id}')]
+    // public function getInvoiceById(Request $req, int $id) {
+
+    // }
 
 
     #[Post('/initiate')]
