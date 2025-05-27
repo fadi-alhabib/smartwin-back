@@ -8,8 +8,9 @@ use App\Http\Requests\Room\CreateRoomRequest;
 use App\Http\Resources\Room\RoomResource;
 use App\Models\Room;
 use App\Services\Rooms\Contracts\RoomServiceInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+
 use Pusher\Pusher;
 use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Post;
