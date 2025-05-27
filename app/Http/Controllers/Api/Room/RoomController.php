@@ -42,7 +42,7 @@ class RoomController extends Controller
         return $this->success(data: new RoomResource($room));
     }
 
-    #[Get(uri: '/offline', middleware: ['auth:sanctum'])]
+    #[Get(uri: '/offline', middleware: 'auth:sanctum')]
     public function goOffline(Request $request)
     {
         $userId = auth('sanctum')->id;
