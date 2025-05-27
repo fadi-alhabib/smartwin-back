@@ -45,7 +45,7 @@ class RoomController extends Controller
     #[Get(uri: '/offline', middleware: ['auth:sanctum'])]
     public function goOffline(Request $request)
     {
-        $userId = $request->user()->id;
+        $userId = $request->user('sanctum')->id;
         $room = Room::where('host_id', $userId)->first();
         if ($room) {
             $room->online = false;
