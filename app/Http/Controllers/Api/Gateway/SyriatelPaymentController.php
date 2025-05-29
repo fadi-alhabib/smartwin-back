@@ -39,6 +39,9 @@ class SyriatelPaymentController extends Controller
             "username" => $this->username,
             "password" => $this->password,
         ]);
+        if ($res->json()["errorCode"] != 0) {
+            return $this->failed("لقد حدث خطأ ما يرجى إعادة المحاولة");
+        }
         $token = $res->json()["token"];
         $transactionId = Str::uuid()->toString();
         $body = [
