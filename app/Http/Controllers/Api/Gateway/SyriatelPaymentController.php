@@ -66,7 +66,7 @@ class SyriatelPaymentController extends Controller
                 "token" => $token,
                 "user_id" => $user->id
             ]);
-            return $this->success();
+            return $this->success(data: $resJson);
         } else if ($errorCode == -4) {
             return $this->failed("رقم خاطئ");
         } else if ($errorCode == -105) {
