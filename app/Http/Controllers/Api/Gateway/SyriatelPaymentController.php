@@ -87,7 +87,7 @@ class SyriatelPaymentController extends Controller
             "transactionID" => $payment->transactionID,
             "token" => $payment->token,
         ];
-        $resConfirm = Http::post("/paymentConfirmation", data: $body);
+        $resConfirm = Http::post("{$this->baseUrl}/paymentConfirmation", data: $body);
         $errorCode = $resConfirm["errorCode"];
         if ($errorCode == 0) {
             $payment->complete = true;
