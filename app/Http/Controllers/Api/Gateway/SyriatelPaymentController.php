@@ -65,7 +65,8 @@ class SyriatelPaymentController extends Controller
         } else if ($errorCode == -105) {
             return $this->failed("ليس لديك حساب في Syriatel cash");
         } else {
-            return $this->failed("حدث خطأ ما يرجى إعادة المحاولة");
+            return $this->json(["message" => "حدث خطأ ما يرجى إعادة المحاولة", "error" => $resJson]);
+            return $this->failed();
         }
     }
 
