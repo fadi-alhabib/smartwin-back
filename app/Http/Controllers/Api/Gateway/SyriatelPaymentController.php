@@ -66,7 +66,7 @@ class SyriatelPaymentController extends Controller
             return $this->failed("ليس لديك حساب في Syriatel cash");
         } else {
             return $this->json(["message" => "حدث خطأ ما يرجى إعادة المحاولة", "error" => $resJson]);
-            return $this->failed();
+            // return $this->failed();
         }
     }
 
