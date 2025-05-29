@@ -54,6 +54,7 @@ class SyriatelPaymentController extends Controller
             "token" => $token,
         ];
         $resPayment = Http::post("{$this->baseUrl}/paymentRequest", data: $body);
+        Log::alert($resPayment->json());
         $resJson = $resPayment->json();
         $errorCode = $resJson["errorCode"];
         if ($errorCode == 0) {
