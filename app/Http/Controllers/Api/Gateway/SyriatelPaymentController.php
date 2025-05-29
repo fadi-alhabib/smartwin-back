@@ -53,12 +53,19 @@ class SyriatelPaymentController extends Controller
             "transactionID" => $transactionId,
             "token" => $token,
         ];
+
         $resPayment = Http::post("{$this->baseUrl}/paymentRequest", data: $body);
         Log::alert($resPayment->json());
         $resJson = $resPayment->json();
         $errorCode = $resJson["errorCode"];
         if ($errorCode == 0) {
-            SyriatelPayment::create([...$body, "user_id" => $user->id]);
+            SyriatelPayment::create([
+                "customerMSISDN" => $request->customerMSISDN,
+                "amount" => $request->amount,
+                "transactionID" => $transactionId,
+                "token" => $token,
+                "user_id" => $user->id
+            ]);
             return $this->success();
         } else if ($errorCode == -4) {
             return $this->failed("رقم خاطئ");
