@@ -35,10 +35,12 @@ class SyriatelPaymentController extends Controller
     public function requestPayment(RequestPaymentRequest $request)
     {
         $user = $request->user();
+        Log::alert($this->username);
         $res = Http::post("{$this->baseUrl}/getToken", data: [
             "username" => $this->username,
             "password" => $this->password,
         ]);
+        Log::alert($res->json());
         if ($res->json()["errorCode"] != 0) {
             return $this->failed("لقد حدث خطأ ما يرجى إعادة المحاولة");
         }
