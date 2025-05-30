@@ -35,7 +35,7 @@ class SyriatelPaymentController extends Controller
     public function requestPayment(RequestPaymentRequest $request)
     {
         $user = $request->user();
-        Log::alert($this->username);
+
         $res = Http::post("{$this->baseUrl}/getToken", data: [
             "username" => $this->username,
             "password" => $this->password,
@@ -53,7 +53,7 @@ class SyriatelPaymentController extends Controller
             "transactionID" => $transactionId,
             "token" => $token,
         ];
-
+        Log::alert($body);
         $resPayment = Http::post("{$this->baseUrl}/paymentRequest", data: $body);
         Log::alert($resPayment->json());
         $resJson = $resPayment->json();
