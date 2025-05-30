@@ -49,7 +49,7 @@ class SyriatelPaymentController extends Controller
         $body = [
             "customerMSISDN" => $request->customerMSISDN,
             "merchantMSISDN" => $this->merchantNumber,
-            "amount" => $request->amount,
+            "amount" => (string)$request->amount,
             "transactionID" => $transactionId,
             "token" => $token,
         ];
