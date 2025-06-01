@@ -47,6 +47,12 @@ class AuthController extends Controller
         $otp = rand(100000, 999999);
         $expiresAt = now()->addMinutes(15);
 
+        $existingUser = User::where("phone", $data["phone"])->first();
+
+        if (!$existingUser) {
+            return $this->failed(message: "لا يوجد حساب لهذا الرقم يرجى انشاء حساب ثم تسجيل الدخول");
+        }
+
         // Update or create user with OTP details
         $user = User::updateOrCreate(
             ['phone' => $data['phone']],
