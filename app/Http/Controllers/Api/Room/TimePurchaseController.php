@@ -37,7 +37,7 @@ class TimePurchaseController extends Controller
 
             // Update room’s available time.
             // (Note: Adjust logic here if you need to add to the current available time.)
-            $room->update(['available_time' => $additionalMinutes]);
+            $room->update(['available_time' => $room->available_time += $additionalMinutes]);
 
             // Record the time purchase
             TimePurchase::create([

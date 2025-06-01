@@ -25,18 +25,18 @@ class AuthController extends Controller
     #[Post('/register')]
     public function register(RegisterRequest $request)
     {
-        try {
-            $data = $request->validated();
-            $user = User::create([
-                'full_name' => $data['full_name'],
-                'phone' => $data['phone'],
-            ]);
 
-            return $this->success(message: 'User registered successfully.', data: $user, statusCode: 201);
-        } catch (\Throwable $th) {
-
-            return $this->failed($th, 500);
+        $data = $request->validated();
+        $existingUser = User::where("phone", $data["phone"])->first();
+        if ($existingUser) {
+            return $this->failed(message: "يوجد حساب لهذا الرقم يرجى تسجيل الدخول");
         }
+        $user = User::create([
+            'full_name' => $data['full_name'],
+            'phone' => $data['phone'],
+        ]);
+
+        return $this->success(message: 'User registered successfully.', data: $user, statusCode: 201);
     }
 
     #[Post('/send-otp')]
