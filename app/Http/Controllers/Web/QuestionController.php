@@ -20,7 +20,7 @@ class QuestionController extends Controller
 
     public function index()
     {
-        $questions = Question::get();
+        $questions = Question::latest()->get();
 
         return view('questions.question', ['questions' => $questions]);
     }
