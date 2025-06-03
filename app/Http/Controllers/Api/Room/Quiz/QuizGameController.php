@@ -260,6 +260,6 @@ class QuizGameController extends Controller
     private function calculateScore($rightAnswersCount)
     {
 
-        return $rightAnswersCount > 8 ? 10 : ($rightAnswersCount > 6 ? 5 : -10);
+        return $rightAnswersCount > 8 ? 5 : ($rightAnswersCount > 6 ? 2 : -5);
     }
 }

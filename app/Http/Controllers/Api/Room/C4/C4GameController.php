@@ -33,9 +33,9 @@ class C4GameController extends Controller
             'room_id' => $room->id,
             'board' => $this->initializeBoard(),
             'challenger_id' => $request->challenged_id,
-            'current_turn' => $userId, // Host starts first
+            'current_turn' => $userId,
         ]);
-        // return $this->success(["d" => $game], statusCode: 400);
+
         $this->pusher->trigger('room.' . $room->id, 'c4.started', [
             'game_id' => $game->id,
             'challenger_id' => $game->challenger_id,
@@ -52,16 +52,16 @@ class C4GameController extends Controller
         $c4game = C4Game::find($gameId);
         if ($user->id === $room->host_id) {
             $winner = User::find($c4game->challenger_id);
-            $winner->points += 10;
+            $winner->points += 5;
             $winner->save();
         } else if ($user->id === $c4game->challenger_id) {
             $winner = User::find($room->host_id);
-            $winner->points += 10;
+            $winner->points += 5;
             $winner->save();
         } else {
             return $this->success();
         }
-        $user->points -= 10;
+        $user->points -= 5;
         $user->save();
         $c4game->game_over = true;
         $c4game->end_time = now();
@@ -108,7 +108,7 @@ class C4GameController extends Controller
         if ($this->checkWin($board, $player)) {
             $message = 'Player ' . $player . ' wins!';
             $winner = User::find($c4game->current_turn);
-            $winner->points += 10;
+            $winner->points += 5;
             $winner->save();
             $c4game->game_over = true;
             $c4game->end_time = now();

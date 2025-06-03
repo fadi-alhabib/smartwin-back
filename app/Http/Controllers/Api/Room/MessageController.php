@@ -41,7 +41,7 @@ class MessageController extends Controller
         $roomId = Room::where('host_id', $request->user()->id)->first()->id;
         $users = User::whereNot('id', $request->user()->id)->whereHas('messages', function ($query) use ($roomId) {
             $query->where('room_id', $roomId)
-                ->where('created_at', '>=', Carbon::now()->subMinutes(15));
+                ->where('created_at', '>=', Carbon::now()->subMinutes(1));
         })->get();
         return $this->success($users);
     }
