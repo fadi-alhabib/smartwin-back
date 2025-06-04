@@ -37,7 +37,7 @@ class AdsController extends Controller
     #[Get(uri: '/question')]
     public function questionAds(Request $request)
     {
-        $ads = Advertisement::where("home_ad", false)->get();
+        $ads = Advertisement::where("home_ad", false)->where('to_date', '>', Carbon::today())->where('is_active', true)->inRandomOrder()->limit(5)->get();
         return $this->success(data: AdResource::collection($ads));
     }
 }
