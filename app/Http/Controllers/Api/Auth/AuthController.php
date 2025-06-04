@@ -63,7 +63,7 @@ class AuthController extends Controller
         $smsParams = [
             'user_name' => "Smart Win1",
             'password' => "Pp@1234567",
-            'msg' => "إن كود التفعيل الخاص بالتطبيق هو:\n$otp\nلا تشارك هذا الرمز مع احد.",
+            'msg' => "إن كود التفعيل الخاص بتطبيق smart win هو: $otp لا تشارك هذا الرمز مع أحد.",
             'sender' => "Smart Win",
             'to' => "963" . ltrim($data['phone'], 0) . ";",
         ];
