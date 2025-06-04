@@ -18,6 +18,6 @@ class EloquentAdsRepository extends BaseRepository implements AdsRepositoryInter
     // gets random active records based on a limit  
     public function getRandomActive(?int $limit = 5): Collection
     {
-        return $this->model->where('is_active', true)->where('is_image', true)->inRandomOrder()->limit($limit)->get();
+        return $this->model->where('is_active', true)->where('is_img', true)->inRandomOrder()->limit($limit)->get();
     }
 }
