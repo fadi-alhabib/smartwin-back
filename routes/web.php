@@ -34,6 +34,9 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+Route::get('/php-limits', function () {
+    return phpinfo();
+});
 
 Route::get('/storage/{folder}/{filename}', function ($folder, $filename) {
     $path = storage_path('app/public/' . $folder . '/' . $filename);
