@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Ads;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Ads\AdResource;
+use App\Models\Advertisement;
 use App\Models\Room;
 use App\Services\Ads\Contracts\AdsServiceInterface;
 use Illuminate\Http\Request;
@@ -31,5 +32,12 @@ class AdsController extends Controller
             $room->save();
         }
         return $this->success(data: ['ads' => AdResource::collection($ads), 'points' => $user->points, 'available_time' => $room?->available_time, 'room_id' => $room?->id]);
+    }
+
+    #[Get(uri: '/question')]
+    public function questionAds(Request $request)
+    {
+        $ads = Advertisement::where("home_ad", false)->get();
+        return $this->success(data: AdResource::collection($ads));
     }
 }
