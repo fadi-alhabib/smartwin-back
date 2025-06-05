@@ -63,13 +63,14 @@ class AuthController extends Controller
         $smsParams = [
             'user_name' => "Smart Win1",
             'password' => "Pp@1234567",
-            'msg' => "إن كود التفعيل الخاص بتطبيق smart win هو: $otp لا تشارك هذا الرمز مع أحد.",
+            'template_code' => "Smart_T1",
+            "param_list" => $otp,
             'sender' => "Smart Win",
             'to' => "963" . ltrim($data['phone'], 0) . ";",
         ];
 
         // Construct API URL with parameters
-        $apiUrl = 'https://bms.syriatel.sy/API/SendSMS.aspx';
+        $apiUrl = 'https://bms.syriatel.sy/API/SendTemplateSMS.aspx';
 
         try {
             // Send the SMS request
