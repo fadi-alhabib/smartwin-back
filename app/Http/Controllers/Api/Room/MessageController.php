@@ -46,9 +46,10 @@ class MessageController extends Controller
         return $this->success($users);
     }
     #[Get(uri: '/rooms/{room}', middleware: ['auth:sanctum'])]
-    public function index(Room $room)
+    public function index(Request $request, Room $room)
     {
         $messages = $room->messages()->with('user')->get();
+        $this->pusher->trigger('room.' . $room->id, 'joined', ["username" => $request->user()->full_name],);
         return $this->success(data: MessageResource::collection($messages));
     }
 }
